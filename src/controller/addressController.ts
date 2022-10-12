@@ -1,6 +1,6 @@
 import Booking from '../model/Booking';
 import User from '../model/User';
-import Address from 'src/model/Address';
+import Address from '../model/Address';
 import { Request, Response } from 'express';
 
 const create = async (req: Request, res: Response) => {
