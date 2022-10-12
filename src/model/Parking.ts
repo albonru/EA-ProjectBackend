@@ -7,13 +7,19 @@ const Parking = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "User"
 	},
+    address: {
+        type: Schema.Types.ObjectId,
+		ref: "Address"
+    },
+    opinions: {
+        type: Schema.Types.ObjectId,
+		ref: "Opinion"
+    },
     type: String,
     price: Number,
     size: String,
     difficulty: Number, 
     score: Number,
-    direction: String
-    //Faltaria la disponibilitat i les opinions
 });
 
 export default model('Parking', Parking);
