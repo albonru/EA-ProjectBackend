@@ -1,5 +1,6 @@
 import Booking from '../model/Booking';
 import Parking from '../model/Parking';
+import User from '../model/User';
 import Address from '../model/Address';
 import { Request, Response } from 'express';
 
