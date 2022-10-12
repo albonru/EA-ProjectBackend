@@ -4,7 +4,9 @@ import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
 import User from "./api/User";
 import Booking from "./api/Booking";
-import Adress from "./model/Address";
+import Address from "./api/Address";
+import Parking from "./api/Parking";
+import Opinion from "./api/Opinion";
 
 
 const app = express();
@@ -16,6 +18,9 @@ app.use(cors());
 
 app.use('/api/users', User)
 app.use('/api/bookings', Booking)
+app.use('/api/parkings', Parking)
+app.use('/api/addresses', Address)
+app.use('/api/opinions', Opinion)
 
 app.get('/', ( req: express.Request, res: express.Response ) => {
 	res.send('Hello World!')

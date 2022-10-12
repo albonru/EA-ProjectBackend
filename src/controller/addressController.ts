@@ -5,7 +5,7 @@ import Address from '../model/Address';
 import { Request, Response } from 'express';
 
 const create = async (req: Request, res: Response) => {
-	//const user = req.body.user;
+	// const user = req.body.user;
 	const { country, city, street, spotNumber } = req.body;
 	// const street = req.body.street;
 	// const spotNumber = req.body.spotNumber;
@@ -58,5 +58,5 @@ export default {
 	cancel,
 	getall,
 	getone,
-	//changeStreet
+	// changeStreet
 };

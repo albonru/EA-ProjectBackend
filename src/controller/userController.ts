@@ -4,16 +4,19 @@ import CryptoJS from 'crypto-js';
 import { Request, Response } from 'express';
 
 const register = async (req: Request, res: Response) => {
-	let { name, email, password } = req.body;
+	// let { name, email, password } = req.body;
+	const name = req.body.name;
+	const email = req.body.email;
+	let password = req.body.password;
 	// VERIFICAR EMAIL ES EMAIL
 	// VERIFICAR QUE NO EXISTEIXI JA
 	password = CryptoJS.AES.encrypt(password, 'secret key 123').toString();
 	const points = 0;
-	const newUser = new User({ 
-		name: name, 
-		email: email, 
-		password: password, 
-		points: points 
+	const newUser = new User({
+		name,
+		email,
+		password,
+		points
 	});
 	await newUser.save();
 	const token = jwt.sign({ id: newUser._id }, 'yyt#KInN7Q9X3m&$ydtbZ7Z4fJiEtA6uHIFzvc@347SGHAjV4E', {
@@ -28,7 +31,7 @@ const login = async (req: Request, res : Response) => {
 	if (!user) {
 		return res.status(404).send('The email does not exist');
 	}
-	const validPassword = CryptoJS.AES.decrypt(<string>user.password, 'secret key 123').toString(CryptoJS.enc.Utf8);
+	const validPassword = CryptoJS.AES.decrypt(user.password as string, 'secret key 123').toString(CryptoJS.enc.Utf8);
 	if (!validPassword) {
 		return res.status(401).json({ auth: false, token: null });
 	}
@@ -64,7 +67,7 @@ const changePass = async (req: Request, res: Response) => {
 	if (!user) {
 		return res.status(404).send('No user found.'); // catch
 	}
-	if(req.body.password === CryptoJS.AES.decrypt(<string>user.password, 'secret key 123').toString(CryptoJS.enc.Utf8)){
+	if(req.body.password === CryptoJS.AES.decrypt(user.password as string, 'secret key 123').toString(CryptoJS.enc.Utf8)){
 		let newpassword = req.body.newpassword;
 		newpassword = CryptoJS.AES.encrypt(newpassword, 'secret key 123').toString();
 		user.password = newpassword;

@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 
 
 const parking = async (req: Request, res: Response) => {
-	try { //Segons la alba esta malament pero jeje
+	try { // Segons la alba esta malament pero jeje
 		const user = req.body.user;
 		const name = req.body.name;
     	const type = req.body.type;
@@ -21,7 +21,7 @@ const parking = async (req: Request, res: Response) => {
 			name,
 			user: user1._id,
         	type,
-        	price, 
+        	price,
         	size,
         	difficulty,
         	score,

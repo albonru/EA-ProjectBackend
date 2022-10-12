@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 const Opinion = new Schema({
-    //id_Opinion: { type: Array, required: true },
+    // id_Opinion: { type: Array, required: true },
     us_id: { type: String, required: true },
     park_id: { type: String, required: true },
 	date: { type: Date, required: true },

@@ -26,14 +26,14 @@ const book = async (req: Request, res: Response) => {
 		return res.status(400).json({ message: 'Parking not found' });
 	}
 	// try {
-		
+
 	// }
 	// catch(e) {
 	// 	console.log(e);
 	// 	return res.status(400).json({ message: 'Customer not found' });
 	// }
 	// try {
-		
+
 	// }
 	// catch(e) {
 	// 	console.log(e);
@@ -43,8 +43,8 @@ const book = async (req: Request, res: Response) => {
 	const newBooking = new Booking({
 		parking: parking1._id,
 		customer: customer._id,
-		arrival: arrival,
-		departure: departure,
+		arrival,
+		departure,
 	});
 	// AFEGIR EN EL ARRAY DEL USUARI??????
 	await newBooking.save();
@@ -57,7 +57,7 @@ const cancel = async (req: Request, res: Response) => {
 		return res.status(400).json({ message: 'Booking not found' });
 	}
 	// try {
-		
+
 	// }
 	// catch(e) {
 	// 	console.log(e);
@@ -75,7 +75,7 @@ const getall = async (req: Request, res: Response) => {
 const getone = async (req: Request, res: Response) => {
 	const booking = await Booking.findById(req.params.id);
 	// try {
-		
+
 	// }
 	// catch(e) {
 	// 	console.log(e);

@@ -3,7 +3,7 @@ import { stringify } from 'querystring';
 
 const Parking = new Schema({
 	id: String,
-	user: { //Aqui puc nose si puc posar userid
+	user: { // Aqui puc nose si puc posar userid
 		type: Schema.Types.ObjectId,
 		ref: "User"
 	},
@@ -18,8 +18,8 @@ const Parking = new Schema({
     type: String,
     price: Number,
     size: String,
-    difficulty: Number, 
-    score: Number,
+    difficulty: Number,
+    score: Number
 });
 
 export default model('Parking', Parking);
