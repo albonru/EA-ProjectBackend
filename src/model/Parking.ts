@@ -12,7 +12,7 @@ const Parking = new Schema({
     size: String,
     difficulty: Number, 
     score: Number,
-    direction: String
+    address: { type: Schema.Types.ObjectId, ref: 'Address'}
     //Faltaria la disponibilitat i les opinions
 });
 

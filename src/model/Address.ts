@@ -3,6 +3,8 @@ import { Schema, model } from 'mongoose';
 const Address = new Schema({
 	//tipus de via ?
 	//numero portal?
+	country: String,
+	city: String,
 	street: String,
 	spotNumber: Number,
 	user: {

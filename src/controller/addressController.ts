@@ -1,23 +1,25 @@
 import Booking from '../model/Booking';
-import User from '../model/User';
-import Address from 'src/model/Address';
+import Parking from '../model/Parking';
+import Address from '../model/Address';
 import { Request, Response } from 'express';
 
 const create = async (req: Request, res: Response) => {
-	const user = req.body.user;
-	const street = req.body.street;
-	const spotNumber = req.body.spotNumber;
-	const user1 = await User.findOne({ name: user });
-	if (!user1) {
-		return res.status(400).json({ message: 'User not found' });
-	}
+	//const user = req.body.user;
+	const { country, city, street, spotNumber } = req.body;
+	// const street = req.body.street;
+	// const spotNumber = req.body.spotNumber;
+	// const parking = await Parking.findById();
+	// if (!parking) {
+	// 	return res.status(400).json({ message: 'User not found' });
+	// }
 	const newAddress = new Address({
+		country,
+		city,
 		street,
-		spotNumber,
-		user: user1._id
+		spotNumber
 	});
 	await newAddress.save();
-	res.status(200).json({ auth: true });
+	res.status(200).json(newAddress);
 };
 
 const cancel = async (req: Request, res: Response) => {
@@ -26,11 +28,11 @@ const cancel = async (req: Request, res: Response) => {
 		return res.status(404).send('This address does not exist');
 	}
 	await Address.deleteOne({ user: req.body.user });
-	res.status(200).json({ auth: true });
+	res.status(200).json(address1);
 };
 
 const getall = async (req: Request, res: Response) => {
-	const addresses = await Address.find().populate('user');
+	const addresses = await Address.find();
 	res.json(addresses);
 };
 
