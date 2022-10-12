@@ -20,11 +20,11 @@ await newOpinion.save();
 res.status(200).json({ auth: true });
 };
 const getallOpinionsPark = async (req: Request, res: Response) => {
-	const opinions = await Opinion.findById(req.params.parking._id);
+	const opinions = await Opinion.findById(req.params.id);
 	res.json(opinions);
 };
 const getallOpinionsUser = async (req: Request, res: Response) => {
-	const opinions = await Opinion.findById(req.params.user._id);
+	const opinions = await Opinion.findById(req.params.id);
 	res.json(opinions);
 };
 export default {
