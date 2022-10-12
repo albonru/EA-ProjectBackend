@@ -4,6 +4,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
 import User from "./api/User";
 import Booking from "./api/Booking";
+import Adress from "./model/Address";
 
 
 const app = express();
