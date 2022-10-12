@@ -1,10 +1,12 @@
 import Parking from '../model/Parking';
 import User from '../model/User';
+import Address from '../model/Address';
+import Opinion from '../model/Opinion';
 import { Request, Response } from 'express';
 
 
-const parking = async (req: Request, res: Response) => {
-	try { // Segons la alba esta malament pero jeje
+const register = async (req: Request, res: Response) => {
+	try { 
 		const user = req.body.user;
 		const name = req.body.name;
     	const type = req.body.type;
@@ -12,20 +14,25 @@ const parking = async (req: Request, res: Response) => {
     	const size = req.body.size;
     	const difficulty = req.body.difficulty;
     	const score = req.body.score;
-    	const direction = req.body.direction;
+
 		const user1 = await User.findOne({ name: user });
 		if (!user1) {
 			return res.status(400).json({ message: 'User not found' });
 		}
+		// const address1 = await Address.findOne({ name: user });
+		// if (!address1) {
+		//	return res.status(400).json({ message: 'Address not found' });
+		// }
+		
 		const newParking = new Parking({
 			name,
 			user: user1._id,
         	type,
-        	price,
+        	price, 
         	size,
         	difficulty,
         	score,
-        	direction
+        	// address: address1._id
 		});
 		await newParking.save();
 		res.status(200).json({ auth: true });
@@ -45,9 +52,9 @@ const cancel = async (req: Request, res: Response) => {
     	const difficulty = req.body.difficulty;
     	const score = req.body.score;
     	const direction = req.body.direction;
-		const findtransport = await Parking.findOne({ id, user: userID, type, price, size, difficulty, score, direction });
+		const findtransport = await Parking.findOne({ id, user: userID, type, price, size, difficulty, score});
 		if (!findtransport) {
-			return res.status(400).json({ message: 'Booking not found' });
+			return res.status(400).json({ message: 'Parking not found' });
 		}
 		await Parking.findByIdAndDelete(findtransport._id);
 		res.status(200).json({ auth: true });
@@ -63,7 +70,7 @@ const getall = async (req: Request, res: Response) => {
 };
 
 export default {
-	parking,
+	register,
 	cancel,
 	getall
 };
