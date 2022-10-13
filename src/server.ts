@@ -7,6 +7,8 @@ import Booking from "./api/Booking";
 import Address from "./api/Address";
 import Parking from "./api/Parking";
 import Opinion from "./api/Opinion";
+import Message from "./api/Message";
+import Chat from "./api/Chat";
 
 
 const app = express();
@@ -21,6 +23,8 @@ app.use('/api/bookings', Booking)
 app.use('/api/parkings', Parking)
 app.use('/api/addresses', Address)
 app.use('/api/opinions', Opinion)
+app.use('/api/messages', Message)
+app.use('/api/chats', Chat)
 
 app.get('/', ( req: express.Request, res: express.Response ) => {
 	res.send('Hello World!')

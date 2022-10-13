@@ -33,13 +33,14 @@ const cancel = async (req: Request, res: Response) => {
 };
 
 const getall = async (req: Request, res: Response) => {
-	const addresses = await Address.find();
+ 	const addresses = await Address.find();
 	res.json(addresses);
 };
 
+
 const getone = async (req: Request, res: Response) => {
 	const address = await Address.findById(req.params.id);
-	res.json(address);
+ 	res.json(address);
 };
 
 /*const changeStreet = async (req: Request, res: Response) => {
@@ -58,5 +59,4 @@ export default {
 	cancel,
 	getall,
 	getone,
-	// changeStreet
 };
