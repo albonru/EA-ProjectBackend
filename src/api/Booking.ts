@@ -3,9 +3,10 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.post('/book', bookingController.book);
-router.delete('/cancel', bookingController.cancel);
-router.get('/', bookingController.getall);
-router.get('/:id', bookingController.getone);
+// NO VERIFY
+router.post('/book', bookingController.book);  // OK
+router.delete('/cancel/:id', bookingController.cancel); // OK
+router.get('/', bookingController.getall); // OK
+router.get('/:id', bookingController.getone); // OK
 
 export default router;

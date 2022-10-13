@@ -3,12 +3,17 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.post('/register', userController.register);
-router.post('/login', userController.login);
-router.get('/profile/:id', userController.profile);
-router.get('/', userController.getall);
-router.get('/:id', userController.getone);
-router.put('/forgotpass/:id', userController.changePass); // no va bé
-router.put('/update/:id', userController.update);
+// ALL OK NO VERIFY
+router.post('/register', userController.register); // OK
+router.post('/login', userController.login); // OK
+router.get('/profile/:id', userController.profile); // OK
+router.get('/', userController.getall); // OK
+router.put('/forgotpass/:id', userController.changePass); // OK
+router.put('/update/:id', userController.update); // OK
+router.delete('/delete/:id', userController.deleteUser); // OK
+// router.put('/addParking', userController.addParking);
+// router.put('/addBooking', userController.addBooking);
+// router.put('/addOpinion', userController.addOpinion);
+// router.put('/addFavorite', userController.addFavorite);
 
 export default router;
