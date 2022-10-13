@@ -24,12 +24,12 @@ const create = async (req: Request, res: Response) => {
 };
 
 const cancel = async (req: Request, res: Response) => {
-	const address1 = await Address.find({name: req.body.name }).populate('user');
-	if (!address1) {
+	const address = await Address.findById(req.params.id);
+	if (!address) {
 		return res.status(404).send('This address does not exist');
 	}
-	await Address.deleteOne({ user: req.body.user });
-	res.status(200).json(address1);
+	await Address.deleteOne({ address: req.body.address }); //mirar perque no borra
+	res.status(200).json(address); 
 };
 
 const getall = async (req: Request, res: Response) => {

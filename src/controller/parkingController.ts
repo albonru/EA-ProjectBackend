@@ -6,29 +6,29 @@ import { Request, Response } from 'express';
 
 
 const register = async (req: Request, res: Response) => {
-	try { 
+	try {
 		const user = req.body.user;
-		const name = req.body.name;
     	const type = req.body.type;
     	const price = req.body.price;
     	const size = req.body.size;
     	const difficulty = req.body.difficulty;
     	const score = req.body.score;
 
-		const user1 = await User.findOne({ name: user });
+		const user1 = await User.findById(user);
+		// console.log(user1);
+		// console.log(user);
 		if (!user1) {
-			return res.status(400).json({ message: 'User not found' });
+			return res.status(400).json({ message: 'User not found', user, user1 });
 		}
 		// const address1 = await Address.findOne({ name: user });
 		// if (!address1) {
-		//	return res.status(400).json({ message: 'Address not found' });
+		// 	return res.status(400).json({ message: 'Address not found' });
 		// }
-		
+
 		const newParking = new Parking({
-			name,
 			user: user1._id,
         	type,
-        	price, 
+        	price,
         	size,
         	difficulty,
         	score,
