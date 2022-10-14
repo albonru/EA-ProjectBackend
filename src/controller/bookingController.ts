@@ -15,7 +15,10 @@ const book = async (req: Request, res: Response) => {
 			departure,
 		});
 		await newBooking.save().catch(Error);
-		// customer.addBooking(user.id, JSON.stringify(newBooking));
+		await User.updateOne(
+			{ email: user },
+			{ $addToSet: { myBookings: newBooking._id } }
+		);
 		res.status(200).json({ auth: true });
 	}
 	catch(err) {
@@ -31,6 +34,11 @@ const cancel = async (req: Request, res: Response) => {
 		return res.status(400).send({ message: 'Booking does not exist', err });
 	}
 	try {
+		const booking1 = await Booking.findById(req.params.id);
+		await User.updateOne(
+			{ _id: booking1.customer },
+			{ $pull: { myBookings: booking1._id } }
+		);
 		await Booking.deleteOne({ _id: req.params.id });
 		res.status(200).json({ auth: true });
 	}
@@ -41,7 +49,7 @@ const cancel = async (req: Request, res: Response) => {
 
 const getall = async (req: Request, res: Response) => {
 	try {
-		const bookings = await Booking.find().populate('customer').populate('parking');
+		const bookings = await Booking.find(); // .populate('customer').populate('parking');
 		res.json(bookings);
 	}
 	catch(err) {
@@ -51,7 +59,7 @@ const getall = async (req: Request, res: Response) => {
 
 const getone = async (req: Request, res: Response) => {
 	try {
-		const booking = await Booking.findById(req.params.id).populate('customer').populate('parking');
+		const booking = await Booking.findById(req.params.id); // .populate('customer').populate('parking');
 		res.json(booking);
 	}
 	catch(err) {
