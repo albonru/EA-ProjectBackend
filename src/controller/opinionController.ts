@@ -5,9 +5,9 @@ import { Request, Response } from 'express';
 
 const opinion = async (req: Request, res: Response) => {
 	const { user, parking, date, description, puntuacio } = req.body;
-    const customer = await User.findOne({ name: user });
+    const customer = await User.findById( req.params.id );
 
-    const parkingopin = await Parking.findById(parking);
+    const parkingopin = await Parking.findById(req.params.id);
 
     const newOpinion = new Opinion({
 		user: customer._id,
@@ -27,8 +27,13 @@ const getallOpinionsUser = async (req: Request, res: Response) => {
 	const opinions = await Opinion.findById(req.params.id);
 	res.json(opinions);
 };
+const getall = async (req: Request, res: Response) => {
+	const opinions = await Opinion.find();
+	res.json(opinions);
+};
 export default {
 	opinion,
 	getallOpinionsPark,
-    getallOpinionsUser
+    getallOpinionsUser,
+	getall
 };
