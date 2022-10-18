@@ -28,8 +28,8 @@ const cancel = async (req: Request, res: Response) => {
 	if (!address) {
 		return res.status(404).send('This address does not exist');
 	}
-	await Address.deleteOne({ address: req.body.address }); //mirar perque no borra
-	res.status(200).json(address); 
+	await Address.deleteOne({ address: req.body.address }); // mirar perque no borra
+	res.status(200).json(address);
 };
 
 const getall = async (req: Request, res: Response) => {
@@ -58,5 +58,5 @@ export default {
 	create,
 	cancel,
 	getall,
-	getone,
+	getone
 };
