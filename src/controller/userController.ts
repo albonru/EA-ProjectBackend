@@ -2,7 +2,6 @@ import User from '../model/User';
 import jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
 import { Request, Response } from 'express';
-import { Schema } from 'mongoose';
 
 const register = async (req: Request, res: Response) => {
 	const name = req.body.name;
@@ -47,7 +46,7 @@ const login = async (req: Request, res : Response) => {
 
 const profile = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params.id, { password: 0 }).populate('myParkings').populate('myBookings');
+		const user = await User.findById(req.params.id, { password: 0 }); // .populate('myParkings').populate('myBookings');
 		res.json(user);
 	}
 	catch(err) {
@@ -56,9 +55,49 @@ const profile = async (req: Request, res: Response) => {
 };
 
 const getall = async (req: Request, res: Response) => {
-	const users = await User.find().populate('myParkings').populate('myBookings');
+	const users = await User.find(); // .populate('myParkings').populate('myBookings');
 	res.json(users);
 };
+
+const getParkings = async (req: Request, res: Response) => {
+	try {
+		const user = await User.findById(req.params.id);
+		res.json(user.myParkings);
+	}
+	catch(err) {
+		res.status(404).send({ message:'The user does not exist', err });
+	}
+}
+
+const getBookings = async (req: Request, res: Response) => {
+	try {
+		const user = await User.findById(req.params.id);
+		res.json(user.myBookings);
+	}
+	catch(err) {
+		res.status(404).send({ message:'The user does not exist', err });
+	}
+}
+
+const getOpinions = async (req: Request, res: Response) => {
+	try {
+		const user = await User.findById(req.params.id);
+		res.json(user.myOpinions);
+	}
+	catch(err) {
+		res.status(404).send({ message:'The user does not exist', err });
+	}
+}
+
+const getFavorites = async (req: Request, res: Response) => {
+	try {
+		const user = await User.findById(req.params.id);
+		res.json(user.myFavorites);
+	}
+	catch(err) {
+		res.status(404).send({ message:'The user does not exist', err });
+	}
+}
 
 const changePass = async (req: Request, res: Response) => {
 	try {
@@ -104,89 +143,16 @@ const deleteUser = async (req: Request, res: Response) =>  {
 	}
 }
 
-// const addParking = async (req: Request, res: Response) => {
-// 	const _id = req.params.id;
-// 	const parking = req.body.parking;
-// 	try {
-// 		const user = await User.findById(_id);
-// 		let userparkings = user.myParkings;
-// 		let newParkings = userparkings.push(parking);
-// 		const user1 = await User.findByIdAndUpdate(_id, {
-// 			myParkings: newParkings
-// 		}, {new: true});
-// 	}
-// 	catch(err){
-// 		res.status(500).json({ message: 'User not found', err });
-// 	}
-// }
-
-async function addBooking(id: string, booking: string) {
-	try {
-		const user = await User.findById(id);
-		const userbookings = user.myBookings;
-		const newBookings = userbookings.push(new Schema.Types.ObjectId(booking));
-		const user1 = await User.findByIdAndUpdate(id, {
-			myBookings: newBookings
-		}, {new: true});
-		return '200OK';
-	}
-	catch(err) {
-		return err;
-	}
-}
-
-// const addBooking1 = async (req: Request, res: Response) => {
-// 	const _id = req.params.id;
-// 	const booking = req.body.booking;
-// 	try {
-// 		const user = await User.findById(_id);
-// 		let userbookings = user.myBookings;
-// 		let newBookings = userbookings.push(booking);
-// 		const user1 = await User.findByIdAndUpdate(_id, {
-// 			myBookings: newBookings
-// 		}, {new: true});
-// 	}
-// 	catch(err){
-// 		res.status(500).json({ message: 'User not found', err });
-// 	}
-// }
-
-// const addOpinion = async (req: Request, res: Response) => {
-// 	const _id = req.params.id;
-// 	const opinion = req.body.opinion;
-// 	try {
-// 		const user = await User.findByIdAndUpdate(_id, {
-
-// 		}, {new: true});
-// 	}
-// 	catch(err){
-// 		res.status(500).json({ message: 'User not found', err });
-// 	}
-// }
-
-// const addFavorite = async (req: Request, res: Response) => {
-// 	const _id = req.params.id;
-// 	const favorite = req.body.favorite;
-// 	try {
-// 		const user = await User.findByIdAndUpdate(_id, {
-
-// 		}, {new: true});
-// 	}
-// 	catch(err){
-// 		res.status(500).json({ message: 'User not found', err });
-// 	}
-// }
-
 export default {
 	register,
 	login,
 	profile,
 	getall,
+	getParkings,
+	getBookings,
+	getOpinions,
+	getFavorites,
 	changePass,
 	update,
-	deleteUser,
-	// addParking,
-	addBooking,
-	// addOpinion,
-	// addFavorite
+	deleteUser
 };

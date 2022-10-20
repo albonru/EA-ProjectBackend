@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 const router = Router();
 
-// NO VERIFY
+// ALL OK NO VERIFY
 router.post('/book', bookingController.book);  // OK
 router.delete('/cancel/:id', bookingController.cancel); // OK
 router.get('/', bookingController.getall); // OK

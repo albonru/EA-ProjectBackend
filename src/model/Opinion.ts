@@ -6,7 +6,6 @@ const Opinion = new Schema({
     park_id: { type: String, required: true },
 	date: { type: Date, required: true },
     description:{type: String, required: true},
-    puntuacio: Number,
-
+    puntuacio: Number
 });
 export default model('Opinion', Opinion);
