@@ -3,14 +3,10 @@ import { stringify } from 'querystring';
 
 const Parking = new Schema({
 	id: String,
-	user: { // Aqui puc nose si puc posar userid
+	user: {
 		type: Schema.Types.ObjectId,
 		ref: "User"
 	},
-    address: {
-        type: Schema.Types.ObjectId,
-		ref: "Address"
-    },
     opinions: {
         type: Schema.Types.ObjectId,
 		ref: "Opinion"
@@ -19,7 +15,7 @@ const Parking = new Schema({
     price: Number,
     size: String,
     difficulty: Number,
-    score: Number
+    score: Number // S'actualitzen de manera interna
 });
 
 export default model('Parking', Parking);
