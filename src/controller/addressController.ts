@@ -58,5 +58,5 @@ export default {
 	create,
 	cancel,
 	getall,
-	getone,
+	getone
 };
