@@ -5,6 +5,7 @@ const router = Router();
 
 router.post('/opinion', opinionController.opinion);
 router.get('/:id', opinionController.getallOpinionsPark);
-router.get('/:id', opinionController.getallOpinionsUser);
+router.get('/UserOpin/:id', opinionController.getallOpinionsUser);
+router.delete('/DelOpinUser/:id',opinionController.cancel);
 router.get('/', opinionController.getall);
 export default router;
