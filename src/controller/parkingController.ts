@@ -6,10 +6,10 @@ import { Request, Response } from 'express';
 const register = async (req: Request, res: Response) => {
 	try {
 		const user = req.body.user;
-    	const type = req.body.type;
-    	const price = req.body.price;
-    	const size = req.body.size;
-    	const difficulty = req.body.difficulty;
+		const type = req.body.type;
+		const price = req.body.price;
+		const size = req.body.size;
+		const difficulty = req.body.difficulty;
 
 		const user1 = await User.findById(user);
 		if (!user1) {
@@ -22,13 +22,17 @@ const register = async (req: Request, res: Response) => {
 
 		const newParking = new Parking({
 			user: user1._id,
-        	type,
-        	price,
-        	size,
-        	difficulty
-        	// address: address1._id
+			type,
+			price,
+			size,
+			difficulty
+			// address: address1._id
 		});
 		await newParking.save();
+		await User.updateOne(
+			{ _id: user },
+			{ $addToSet: { myParkings: newParking._id } }
+		);
 		res.status(200).json({ auth: true });
 	}
 	catch {
@@ -47,8 +51,8 @@ const cancel = async (req: Request, res: Response) => {
 		await Parking.findByIdAndDelete(_id);
 		res.status(200).json({ auth: true });
 	}
-	catch (err){
-		return res.status(400).json({ message: 'Error',err });
+	catch (err) {
+		return res.status(400).json({ message: 'Error', err });
 	}
 };
 
@@ -62,43 +66,43 @@ const getOne = async (req: Request, res: Response) => {
 		const parking = await Parking.findById(req.params.parkingId);
 		res.json(parking);
 	}
-	catch(err) {
-	 	return res.status(400).send({ message: 'Parking not found', err });
+	catch (err) {
+		return res.status(400).send({ message: 'Parking not found', err });
 	}
 }
 const update = async (req: Request, res: Response) => {
-	try{
+	try {
 		const _id = req.params.parkingId;
-		const { type, price, size, difficulty,country, city, street, spotNumber } = req.body;
+		const { type, price, size, difficulty, country, city, street, spotNumber } = req.body;
 		const parking = await User.findByIdAndUpdate(_id, {
 			type,
-    		price,
-    		size,
-    		difficulty,
+			price,
+			size,
+			difficulty,
 			country,
 			city,
 			street,
 			spotNumber
-		}, {new: true});
+		}, { new: true });
 		return res.json(parking);
 	}
-	catch(err){
+	catch (err) {
 		return res.status(400).send({ message: 'Can not update parking', err });
 	}
 }
-const updateAddress = async(req: Request, res: Response) => {
-	try{
+const updateAddress = async (req: Request, res: Response) => {
+	try {
 		const _id = req.params.parkingId;
-		const {country, city, street, spotNumber } = req.body;
+		const { country, city, street, spotNumber } = req.body;
 		const parking = await User.findByIdAndUpdate(_id, {
 			country,
 			city,
 			street,
 			spotNumber
-		}, {new: true});
+		}, { new: true });
 		return res.json(parking);
 	}
-	catch(err){
+	catch (err) {
 		return res.status(400).send({ message: 'Can not update parking address', err });
 	}
 

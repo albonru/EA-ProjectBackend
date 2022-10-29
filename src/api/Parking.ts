@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.post('/register', parkingController.register); // Aida 
+router.post('/register', parkingController.register); // Aida
 router.delete('/cancel/:parkingId', parkingController.cancel); // Alba
 router.get('/', parkingController.getall); // Ferran
 router.put('/update/:parkingId', parkingController.update); // Alvaro
