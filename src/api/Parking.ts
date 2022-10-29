@@ -3,11 +3,11 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.post('/register', parkingController.register); // Aida
-router.delete('/cancel/:parkingId', parkingController.cancel); // Alba
-router.get('/', parkingController.getall); // Ferran
-router.put('/update/:parkingId', parkingController.update); // Alvaro
-router.put('/updateAddress/:parkingId', parkingController.updateAddress); // NO
-router.get('/:parkingId',parkingController.getOne); // Irene
+router.post('/', parkingController.register); // OK
+router.delete('/:id', parkingController.cancel); // OK
+router.get('/', parkingController.getall); // OK
+router.put('/update/:id', parkingController.update); // OK
+router.put('/updateAddress/:id', parkingController.updateAddress); // OK
+router.get('/:id',parkingController.getOne); // OK
 
 export default router;

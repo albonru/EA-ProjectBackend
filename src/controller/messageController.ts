@@ -1,4 +1,3 @@
-import Parking from '../model/Parking';
 import User from '../model/User';
 import Chat from '../model/Chat';
 import Message from '../model/Message';
@@ -9,14 +8,13 @@ const message = async (req: Request, res: Response) => {
 	const chat1 = await Chat.findById(chat);
 	const user1 = await User.findById(user);
 	const date = new Date();
-
 	const newMessage = new Message({
 		chat: chat1._id,
         client: user1._id,
 		send: date,
 		text: text1
 	});
-	await newMessage.save();
+	await newMessage.save().catch(Error);
 	res.status(200).json({ auth: true });
 };
 
@@ -24,7 +22,6 @@ const getallmessagesofChat = async (req: Request, res: Response) => {
 	const { chat1 } = req.body;
 	const messages = await Message.find({chat: chat1});
 	res.json(messages);
-
 };
 
 const getall = async (req: Request, res: Response) => {

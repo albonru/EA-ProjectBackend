@@ -3,18 +3,13 @@ import { Router } from 'express';
 
 const router = Router();
 
-// ALL OK NO VERIFY
-router.post('/register', userController.register); // Irene
-router.post('/login', userController.login); // Ferran
-router.get('/profile/:id', userController.profile); // Alvaro
-router.get('/', userController.getall); // Alvaro
-router.put('/forgotpass/:id', userController.changePass); // NO
-router.put('/update/:id', userController.update); // Alba
-router.delete('/delete/:id', userController.deleteUser); // Aida
-
-// router.put('/addParking', userController.addParking);
-// router.put('/addBooking', userController.addBooking);
-// router.put('/addOpinion', userController.addOpinion);
-// router.put('/addFavorite', userController.addFavorite);
+// FALTA VERIFY
+router.post('/register', userController.register); // OK
+router.post('/login', userController.login); // OK
+router.get('/:id', userController.profile); // OK
+router.get('/', userController.getall);  // OK
+router.put('/forgotpass/:id', userController.changePass); // OK
+router.put('/update/:id', userController.update); // OK
+router.delete('/:id', userController.deleteUser); // OK
 
 export default router;

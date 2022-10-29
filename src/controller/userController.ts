@@ -59,46 +59,6 @@ const getall = async (req: Request, res: Response) => {
 	res.json(users);
 };
 
-const getParkings = async (req: Request, res: Response) => {
-	try {
-		const user = await User.findById(req.params.id);
-		res.json(user.myParkings);
-	}
-	catch(err) {
-		res.status(404).send({ message:'The user does not exist', err });
-	}
-}
-
-const getBookings = async (req: Request, res: Response) => {
-	try {
-		const user = await User.findById(req.params.id);
-		res.json(user.myBookings);
-	}
-	catch(err) {
-		res.status(404).send({ message:'The user does not exist', err });
-	}
-}
-
-const getOpinions = async (req: Request, res: Response) => {
-	try {
-		const user = await User.findById(req.params.id);
-		res.json(user.myOpinions);
-	}
-	catch(err) {
-		res.status(404).send({ message:'The user does not exist', err });
-	}
-}
-
-const getFavorites = async (req: Request, res: Response) => {
-	try {
-		const user = await User.findById(req.params.id);
-		res.json(user.myFavorites);
-	}
-	catch(err) {
-		res.status(404).send({ message:'The user does not exist', err });
-	}
-}
-
 const changePass = async (req: Request, res: Response) => {
 	try {
 		const user = await User.findById(req.params.id);
@@ -129,7 +89,7 @@ const update = async (req: Request, res: Response) => {
 		return res.json(user);
 	}
 	catch(err) {
-		res.status(500).json({ message: 'User not found', err });
+		res.status(400).json({ message: 'User not found', err });
 	}
 }
 
@@ -148,10 +108,6 @@ export default {
 	login,
 	profile,
 	getall,
-	getParkings,
-	getBookings,
-	getOpinions,
-	getFavorites,
 	changePass,
 	update,
 	deleteUser
