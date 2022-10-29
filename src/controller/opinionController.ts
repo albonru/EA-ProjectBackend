@@ -24,29 +24,29 @@ await User.updateOne(
 res.status(200).json({ auth: true });
 };
 const getallOpinionsPark = async (req: Request, res: Response) => {
-	const opinions = await Opinion.findById(req.params.id);
-	res.json(opinions);
+	const opinions1 = await Opinion.findById(req.params.id);
+	res.json(opinions1);
 };
 const getallOpinionsUser = async (req: Request, res: Response) => {
-	const opinions = await Opinion.findById(req.params.id);
-	res.json(opinions);
+	const opinions2 = await Opinion.findById(req.params.id);
+	res.json(opinions2);
 };
 const getall = async (req: Request, res: Response) => {
-	const opinions = await Opinion.find();
-	res.json(opinions);
+	const opinions3 = await Opinion.find();
+	res.json(opinions3);
 };
 const cancel = async (req: Request, res: Response) => {
 	try {
-		const opinion = await Opinion.findById(req.params.id);
+		const opinion4 = await Opinion.findById(req.params.id);
 	}
 	catch(err) {
 		return res.status(400).send({ message: 'Opinion does not exist', err });
 	}
 	try {
-		const opinion = await Opinion.findById(req.params.id);
+		const opinion5 = await Opinion.findById(req.params.id);
 		await User.updateOne(
-			{ _id: opinion.us_id },
-			{ $pull: { myOpinions: opinion._id } }
+			{ _id: opinion5.us_id },
+			{ $pull: { myOpinions: opinion5._id } }
 		);
 		await Opinion.deleteOne({ _id: req.params.id });
 		res.status(200).json({ auth: true });

@@ -13,8 +13,7 @@ const create = async (req: Request, res: Response) => {
 	const newChat = new Chat({
 		parking: parking1._id,
         client: client1._id,
-		customer: customer1._id,
-		messages: 0
+		customer: customer1._id
 	});
 	await newChat.save();
 	res.status(200).json({ auth: true });

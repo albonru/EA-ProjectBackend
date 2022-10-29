@@ -15,7 +15,7 @@ const Parking = new Schema({
 	city: String,
 	street: String,
 	spotNumber: Number,
-    
+
     type: String,
     price: Number,
     size: String,
