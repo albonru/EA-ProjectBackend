@@ -14,7 +14,7 @@ const book = async (req: Request, res: Response) => {
 			arrival,
 			departure,
 		});
-		await newBooking.save().catch(Error);
+		await newBooking.save();
 		await User.updateOne(
 			{ email: user },
 			{ $addToSet: { myBookings: newBooking._id } }

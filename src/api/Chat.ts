@@ -3,7 +3,8 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.post('/chat', chatController.create);  // OK
-router.get('/:id', chatController.getone);  // OK
-router.get('/', chatController.getall);  // OK
+router.post('/', chatController.create);  //
+router.get('/:id', chatController.getone);  //
+router.get('/', chatController.getall);  //
+
 export default router;

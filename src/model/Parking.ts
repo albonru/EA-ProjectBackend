@@ -1,21 +1,13 @@
 import { Schema, model } from 'mongoose';
-import { stringify } from 'querystring';
 
 const Parking = new Schema({
-	id: String,
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: "User"
-	},
-    opinions: {
-        type: Schema.Types.ObjectId,
-		ref: "Opinion"
-    },
+	user: { type: Schema.Types.ObjectId, ref: "User" },
+    opinions: [{ type: Schema.Types.ObjectId, ref: "Opinion" }],
     country: String,
 	city: String,
 	street: String,
+    streetNumber: Number,
 	spotNumber: Number,
-
     type: String,
     price: Number,
     size: String,
