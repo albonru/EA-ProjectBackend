@@ -5,12 +5,12 @@ import { Request, Response } from 'express';
 
 const register = async (req: Request, res: Response) => {
 	try {
-		const { user, type, price, size, difficulty,
+		const { email, type, price, size, difficulty,
 			country, city, street, streetNumber, spotNumber } = req.body;
 
-		const user1 = await User.findById(user);
+		const user1 = await User.findOne({ email });
 		if (!user1) {
-			res.status(400).json({ message: 'User not found', user, user1 });
+			res.status(400).json({ message: 'User not found',email, user1 });
 		}
 		// const address1 = await Address.findOne({ name: user });
 		// if (!address1) {
@@ -31,7 +31,7 @@ const register = async (req: Request, res: Response) => {
 		});
 		await newParking.save().catch(Error);
 		await User.updateOne(
-			{ _id: user },
+			{ _id: user1 },
 			{ $addToSet: { myParkings: newParking._id } }
 		);
 		res.status(200).json({ auth: true });

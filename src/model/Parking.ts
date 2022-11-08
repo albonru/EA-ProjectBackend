@@ -3,6 +3,7 @@ import { Schema, model } from 'mongoose';
 const Parking = new Schema({
 	user: { type: Schema.Types.ObjectId, ref: "User" },
     opinions: [{ type: Schema.Types.ObjectId, ref: "Opinion" }],
+    email: String,
     country: String,
 	city: String,
 	street: String,
