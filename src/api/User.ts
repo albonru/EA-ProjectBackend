@@ -5,7 +5,6 @@ const router = Router();
 
 // FALTA VERIFY
 router.post('/register', userController.register); // OK
-router.post('/login', userController.login); // OK
 router.get('/:id', userController.profile); // OK
 router.get('/', userController.getall);  // OK
 router.put('/forgotpass/:id', userController.changePass); // OK

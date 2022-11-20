@@ -9,6 +9,7 @@ import Parking from "./api/Parking";
 import Opinion from "./api/Opinion";
 import Message from "./api/Message";
 import Chat from "./api/Chat";
+import auth from "./api/auth";
 
 const app = express();
 const port = process.env.PORT || 5432;
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended : true }));
 app.use(bodyParser.json())
 app.use(cors());
 
+app.use('/api/auth', auth)
 app.use('/api/users', User)
 app.use('/api/bookings', Booking)
 app.use('/api/parkings', Parking)

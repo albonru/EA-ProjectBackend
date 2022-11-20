@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 const register = async (req: Request, res: Response) => {
 	try {
 		const { email, type, price, size, difficulty,
-			country, city, street, streetNumber, spotNumber } = req.body;
+			country, city, street, streetNumber, spotNumber } = req.params;
 
 		const user1 = await User.findOne({ email });
 		if (!user1) {
@@ -77,7 +77,7 @@ const getOne = async (req: Request, res: Response) => {
 
 const update = async (req: Request, res: Response) => {
 	const _id = req.params.id;
-	const { type, price, size, difficulty } = req.body;
+	const { type, price, size, difficulty } = req.params;
 	try {
 		const parking = await Parking.findByIdAndUpdate(_id, {
 			type,
@@ -95,7 +95,7 @@ const update = async (req: Request, res: Response) => {
 const updateAddress = async (req: Request, res: Response) => {
 	try {
 		const _id = req.params.id;
-		const { country, city, street, streetNumber, spotNumber } = req.body;
+		const { country, city, street, streetNumber, spotNumber } = req.params;
 		const parking = await Parking.findByIdAndUpdate(_id, {
 			country,
 			city,

@@ -29,24 +29,6 @@ const register = async (req: Request, res: Response) => {
 	res.status(200).json({ auth: true, token });
 };
 
-const login = async (req: Request, res: Response) => {
-	const { email, password } = req.body;
-	try {
-		const user = await User.findOne({ email });
-		const validPassword = CryptoJS.AES.decrypt(user.password as string, 'secret key 123').toString(CryptoJS.enc.Utf8);
-		if (validPassword !== password) {
-			return res.status(401).json({ auth: false, token: null });
-		}
-		const token = jwt.sign({ id: user._id }, 'yyt#KInN7Q9X3m&$ydtbZ7Z4fJiEtA6uHIFzvc@347SGHAjV4E', {
-			expiresIn: 60 * 60 * 24
-		});
-		res.json({ auth: true, token });
-	}
-	catch (err) {
-		res.status(404).send('Cant find user');
-	}
-};
-
 const profile = async (req: Request, res: Response) => {
 	try {
 		const user = await User.findById(req.params.id, { password: 0 }); // .populate('myParkings').populate('myBookings');
@@ -209,7 +191,6 @@ const updatemyFavorites = async (req: Request, res: Response) => {
 
 export default {
 	register,
-	login,
 	profile,
 	getall,
 	changePass,
