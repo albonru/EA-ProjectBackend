@@ -15,7 +15,7 @@ try {
     const validPassword = CryptoJS.AES.decrypt(userFound.password as string, 'secret key 123').toString(CryptoJS.enc.Utf8);
     const index = validPassword.localeCompare(password);
     if (index === 0) {
-        const session = { 'id': userFound.id } as IJwtPayload;
+        const session = { 'id': userFound.id, 'email': userFound.email } as IJwtPayload;
 
         const token = jwt.sign(session, _SECRET, {
             expiresIn: 86400, // 24 hours
