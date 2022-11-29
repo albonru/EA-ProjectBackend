@@ -4,7 +4,7 @@ import { Router } from 'express';
 const router = Router();
 
 // FALTA VERIFY
-router.post('/register', userController.register); // OK
+router.post('/', userController.register); // OK
 router.get('/:id', userController.profile); // OK
 router.get('/', userController.getall);  // OK
 router.put('/forgotpass/:id', userController.changePass); // OK

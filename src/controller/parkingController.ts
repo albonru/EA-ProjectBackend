@@ -5,19 +5,15 @@ import { Request, Response } from 'express';
 
 const register = async (req: Request, res: Response) => {
 	try {
-		const { email, type, price, size, difficulty,
-			country, city, street, streetNumber, spotNumber } = req.params;
-
-		const user1 = await User.findOne({ email });
-		if (!user1) {
-			res.status(400).json({ message: 'User not found',email, user1 });
-		}
-		// const address1 = await Address.findOne({ name: user });
-		// if (!address1) {
-		// 	return res.status(400).json({ message: 'Address not found' });
+		const user = req.params.user_id;
+		const { type, price, size, difficulty,
+			country, city, street, streetNumber, spotNumber } = req.body;
+		// const user1 = await User.findById({ user });
+		// if (!user1) {
+		// 	res.status(400).json({ message: 'User not found',user1 });
 		// }
 		const newParking = new Parking({
-			user: user1._id,
+			user,
 			type,
 			price,
 			size,
@@ -26,12 +22,12 @@ const register = async (req: Request, res: Response) => {
 			city,
 			street,
 			streetNumber,
-			spotNumber
-			// address: address1._id
+			spotNumber,
+			score: 0
 		});
 		await newParking.save().catch(Error);
 		await User.updateOne(
-			{ _id: user1 },
+			{ _id: user },
 			{ $addToSet: { myParkings: newParking._id } }
 		);
 		res.status(200).json({ auth: true });

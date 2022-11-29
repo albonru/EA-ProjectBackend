@@ -4,7 +4,6 @@ import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
 import User from "./api/User";
 import Booking from "./api/Booking";
-// import Address from "./api/Address";
 import Parking from "./api/Parking";
 import Opinion from "./api/Opinion";
 import Message from "./api/Message";
@@ -22,7 +21,6 @@ app.use('/api/auth', auth)
 app.use('/api/users', User)
 app.use('/api/bookings', Booking)
 app.use('/api/parkings', Parking)
-// app.use('/api/addresses', Address)
 app.use('/api/opinions', Opinion)
 app.use('/api/messages', Message)
 app.use('/api/chats', Chat)

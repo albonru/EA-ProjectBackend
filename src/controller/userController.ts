@@ -15,7 +15,12 @@ const register = async (req: Request, res: Response) => {
 		name,
 		email,
 		password,
-		points: 0
+		points: 0,
+		myBookings: [],
+		myFavorites: [],
+		myOpinions: [],
+		myParkings: [],
+		deleted: false
 	});
 	try {
 		await newUser.save();
@@ -79,15 +84,18 @@ const update = async (req: Request, res: Response) => {
 }
 
 const deleteUser = async (req: Request, res: Response) => {
+	const _id = req.params.id;
 	try {
-		const _id = req.params.id;
-		await User.findByIdAndDelete({ _id });
-		res.status(200).json({ status: 'User deleted' });
+		const user = await User.findByIdAndUpdate(_id, {
+			deleted: true
+		}, { new: true });
+		return res.json(user);
 	}
 	catch (err) {
-		res.status(500).json({ message: 'User not found', err });
+		res.status(400).json({ message: 'User not found', err });
 	}
 }
+
 const getmyOpinions = async (req: Request, res: Response) => {
 	try {
 		const user = await User.findById(req.params.id);
@@ -97,6 +105,7 @@ const getmyOpinions = async (req: Request, res: Response) => {
 		res.status(400).send({ message: 'User not found', err });
 	}
 }
+
 const getmyFavorites = async (req: Request, res: Response) => {
 	try {
 		const user = await User.findById(req.params.id);
@@ -106,6 +115,7 @@ const getmyFavorites = async (req: Request, res: Response) => {
 		res.status(400).send({ message: 'User not found', err });
 	}
 }
+
 const getmyParkings = async (req: Request, res: Response) => {
 	try {
 		const user = await User.findById(req.params.id);
@@ -115,6 +125,7 @@ const getmyParkings = async (req: Request, res: Response) => {
 		res.status(400).send({ message: 'User not found', err });
 	}
 }
+
 const getmyBookings = async (req: Request, res: Response) => {
 	try {
 		const user = await User.findById(req.params.id);
@@ -124,6 +135,7 @@ const getmyBookings = async (req: Request, res: Response) => {
 		res.status(400).send({ message: 'User not found', err });
 	}
 }
+
 const updatemyOpinions = async (req: Request, res: Response) => {
 	try {
 		const _id = req.params.id;
@@ -148,6 +160,7 @@ const updatemyOpinions = async (req: Request, res: Response) => {
 		res.status(400).send({ message: 'Cannot update my opinions list', err });
 	}
 }
+
 const updatemyBookings = async (req: Request, res: Response) => {
 	try {
 		const _id = req.params.id;
@@ -172,6 +185,7 @@ const updatemyBookings = async (req: Request, res: Response) => {
 		res.status(400).send({ message: 'Cannot update my booking list', err });
 	}
 }
+
 const updatemyFavorites = async (req: Request, res: Response) => {
 	try {
 		const _id = req.params.id;
