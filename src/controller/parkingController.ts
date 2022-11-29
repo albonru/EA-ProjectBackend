@@ -5,19 +5,17 @@ import { Request, Response } from 'express';
 
 const register = async (req: Request, res: Response) => {
 	try {
-		const { email, type, price, size, difficulty,
-			country, city, street, streetNumber, spotNumber } = req.params;
+		const user = req.params.user_id;
+		const { type, price, size, difficulty,
+			country, city, street, streetNumber, spotNumber } = req.body;
 
-		const user1 = await User.findOne({ email });
-		if (!user1) {
-			res.status(400).json({ message: 'User not found',email, user1 });
-		}
+
 		// const address1 = await Address.findOne({ name: user });
 		// if (!address1) {
 		// 	return res.status(400).json({ message: 'Address not found' });
 		// }
 		const newParking = new Parking({
-			user: user1._id,
+			user,
 			type,
 			price,
 			size,
@@ -26,12 +24,13 @@ const register = async (req: Request, res: Response) => {
 			city,
 			street,
 			streetNumber,
-			spotNumber
+			spotNumber,
+			score: 0
 			// address: address1._id
 		});
 		await newParking.save().catch(Error);
 		await User.updateOne(
-			{ _id: user1 },
+			{ _id: user },
 			{ $addToSet: { myParkings: newParking._id } }
 		);
 		res.status(200).json({ auth: true });
@@ -43,7 +42,7 @@ const register = async (req: Request, res: Response) => {
 
 const cancel = async (req: Request, res: Response) => {
 	try {
-		const _id = req.params.id;
+		const _id = req.body.id;
 		const parking = await Parking.findById(_id)
 		if (!parking) {
 			res.status(400).json({ message: 'Parking not found' });
@@ -76,8 +75,8 @@ const getOne = async (req: Request, res: Response) => {
 }
 
 const update = async (req: Request, res: Response) => {
-	const _id = req.params.id;
-	const { type, price, size, difficulty } = req.params;
+	const _id = req.body.id;
+	const { type, price, size, difficulty } = req.body;
 	try {
 		const parking = await Parking.findByIdAndUpdate(_id, {
 			type,
@@ -94,8 +93,8 @@ const update = async (req: Request, res: Response) => {
 
 const updateAddress = async (req: Request, res: Response) => {
 	try {
-		const _id = req.params.id;
-		const { country, city, street, streetNumber, spotNumber } = req.params;
+		const _id = req.body.id;
+		const { country, city, street, streetNumber, spotNumber } = req.body;
 		const parking = await Parking.findByIdAndUpdate(_id, {
 			country,
 			city,

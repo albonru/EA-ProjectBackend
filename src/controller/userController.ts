@@ -64,7 +64,7 @@ const changePass = async (req: Request, res: Response) => {
 };
 
 const update = async (req: Request, res: Response) => {
-	const _id = req.params.id;
+	const _id = req.params.user_id;
 	const { name, email } = req.body;
 	try {
 		const user = await User.findByIdAndUpdate(_id, {
@@ -80,7 +80,7 @@ const update = async (req: Request, res: Response) => {
 
 const deleteUser = async (req: Request, res: Response) => {
 	try {
-		const _id = req.params.id;
+		const _id = req.params.user_id;
 		await User.findByIdAndDelete({ _id });
 		res.status(200).json({ status: 'User deleted' });
 	}
@@ -90,7 +90,7 @@ const deleteUser = async (req: Request, res: Response) => {
 }
 const getmyOpinions = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params.id);
+		const user = await User.findById(req.params.users_id);
 		res.json(user.myOpinions);
 	}
 	catch (err) {
@@ -99,7 +99,7 @@ const getmyOpinions = async (req: Request, res: Response) => {
 }
 const getmyFavorites = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params.id);
+		const user = await User.findById(req.params.user_id);
 		res.json(user.myFavorites);
 	}
 	catch (err) {
@@ -108,7 +108,7 @@ const getmyFavorites = async (req: Request, res: Response) => {
 }
 const getmyParkings = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params.id);
+		const user = await User.findById(req.params.user_id);
 		res.json(user.myParkings);
 	}
 	catch (err) {
@@ -117,7 +117,7 @@ const getmyParkings = async (req: Request, res: Response) => {
 }
 const getmyBookings = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params.id);
+		const user = await User.findById(req.params.user_id);
 		res.json(user.myBookings);
 	}
 	catch (err) {
@@ -126,7 +126,7 @@ const getmyBookings = async (req: Request, res: Response) => {
 }
 const updatemyOpinions = async (req: Request, res: Response) => {
 	try {
-		const _id = req.params.id;
+		const _id = req.params.user_id;
 		const { parking_id, date, description, points } = req.body;
 		const user1 = User.findById(_id);
 		const parking1 = Parking.findById(parking_id);

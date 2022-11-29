@@ -1,5 +1,6 @@
 import userController from '../controller/userController';
 import { Router } from 'express';
+import { verifyToken, isOwner, istheUser } from '../middlewares/authJWT'
 
 const router = Router();
 
@@ -7,17 +8,17 @@ const router = Router();
 router.post('/register', userController.register); // OK
 router.get('/:id', userController.profile); // OK
 router.get('/', userController.getall);  // OK
-router.put('/forgotpass/:id', userController.changePass); // OK
-router.put('/update/:id', userController.update); // OK
-router.delete('/:id', userController.deleteUser); // OK
+router.put('/forgotpass/', userController.changePass); // OK
+router.put('/update/', [verifyToken, istheUser], userController.update); // OK
+router.delete('/', [verifyToken, istheUser], userController.deleteUser); // OK
 
-router.get('/myparkings/:id', userController.getmyParkings);
-router.get('/mybookings/:id', userController.getmyBookings);
-router.get('/myfavorites/:id', userController.getmyFavorites);
-router.get('/myopinions/:id', userController.getmyOpinions);
+router.get('/myparkings/', [verifyToken], userController.getmyParkings);
+router.get('/mybookings/', [verifyToken], userController.getmyBookings);
+router.get('/myfavorites/', [verifyToken], userController.getmyFavorites);
+router.get('/myopinions/', [verifyToken], userController.getmyOpinions);
 
-router.put('/mybookings/:id', userController.updatemyBookings);
-router.put('/myfavorites/:id', userController.updatemyFavorites);
-router.put('/myopinions/:id', userController.updatemyOpinions);
+router.put('/mybookings/', [verifyToken, istheUser], userController.updatemyBookings);
+router.put('/myfavorites/', [verifyToken, istheUser], userController.updatemyFavorites);
+router.put('/myopinions/', [verifyToken, istheUser], userController.updatemyOpinions);
 
 export default router;
