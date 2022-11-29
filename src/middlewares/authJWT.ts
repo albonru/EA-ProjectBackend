@@ -44,9 +44,9 @@ else {return res.status(403).json({ message: "Not Owner, parking.user = '" + com
 
 export async function istheUser (req: Request, res: Response, next: NextFunction) {
   try {
-    const { id } = req.body;
+    const { user_id } = req.body;
     const comp1 = String(req.params.user_id);
-    const comp2 = String(id);
+    const comp2 = String(user_id);
     const equals = comp1.localeCompare(comp2);
     if (equals === 0) { next(); }
     else {
