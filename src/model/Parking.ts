@@ -12,7 +12,7 @@ const Parking = new Schema({
     price: Number,
     size: String,
     difficulty: Number,
-    score: Number // S'actualitzen de manera interna
+    score: Number
 });
 
 export default model('Parking', Parking);
