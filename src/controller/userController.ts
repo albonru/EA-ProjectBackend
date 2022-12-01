@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import Opinion from '../model/Opinion';
 import Booking from '../model/Booking';
 import Parking from '../model/Parking';
+import parkingController from './parkingController';
 
 const register = async (req: Request, res: Response) => {
 	const name = req.body.name;
@@ -88,6 +89,28 @@ const deleteUser = async (req: Request, res: Response) => {
 		try {
 		const user = await User.findByIdAndUpdate(_id, {
 			deleted: true
+		}, { new: true });
+		const parkings = user.myParkings;
+		for (const p of parkings) {
+			const parking = await Parking.findById(p);
+			await Parking.findByIdAndDelete(p).catch(Error);
+			await User.updateOne(
+				{ _id: parking.user },
+				{ $pull: { myParkings: parking._id } }
+			);
+		}
+		return res.json(user);
+	}
+	catch (err) {
+		res.status(400).json({ message: 'User not found', err });
+	}
+}
+
+const activate =async (req: Request, res: Response) => {
+	const _id = req.params.user_id;
+		try {
+		const user = await User.findByIdAndUpdate(_id, {
+			deleted: false
 		}, { new: true });
 		return res.json(user);
 	}
@@ -204,6 +227,7 @@ export default {
 	changePass,
 	update,
 	deleteUser,
+	activate,
 	getmyOpinions,
 	getmyFavorites,
 	getmyParkings,

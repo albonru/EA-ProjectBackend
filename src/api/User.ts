@@ -8,8 +8,9 @@ const router = Router();
 router.post('/', userController.register); // OK
 router.get('/:id', userController.profile); // OK
 router.get('/', userController.getall);  // OK
-router.put('/forgotpass/', userController.changePass); // OK
-router.put('/update/', [verifyToken, istheUser], userController.update); // OK
+router.put('/changepass', userController.changePass); // OK
+router.put('/update', [verifyToken, istheUser], userController.update); // OK
+router.put('/activate', [verifyToken, istheUser], userController.activate);
 router.delete('/', [verifyToken, istheUser], userController.deleteUser); // OK
 
 router.get('/myparkings/', [verifyToken], userController.getmyParkings);
