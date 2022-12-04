@@ -6,20 +6,20 @@ const router = Router();
 
 // FALTA VERIFY
 router.post('/', userController.register); // OK
-router.get('/:id', userController.profile); // OK
+router.get('/:id', [verifyToken, istheUser], userController.profile); // OK
 router.get('/', userController.getall);  // OK
 router.put('/changepass', userController.changePass); // OK
 router.put('/update', [verifyToken, istheUser], userController.update); // OK
-router.put('/activate', [verifyToken, istheUser], userController.activate);
+router.put('/activate', userController.activate);
 router.delete('/', [verifyToken, istheUser], userController.deleteUser); // OK
 
-router.get('/myparkings/', [verifyToken], userController.getmyParkings);
-router.get('/mybookings/', [verifyToken], userController.getmyBookings);
-router.get('/myfavorites/', [verifyToken], userController.getmyFavorites);
-router.get('/myopinions/', [verifyToken], userController.getmyOpinions);
+// router.get('/myparkings/', [verifyToken], userController.getmyParkings);
+// router.get('/mybookings/', [verifyToken], userController.getmyBookings);
+// router.get('/myfavorites/', [verifyToken], userController.getmyFavorites);
+// router.get('/myopinions/', [verifyToken], userController.getmyOpinions);
 
-router.put('/mybookings/', [verifyToken, istheUser], userController.updatemyBookings);
-router.put('/myfavorites/', [verifyToken, istheUser], userController.updatemyFavorites);
-router.put('/myopinions/', [verifyToken, istheUser], userController.updatemyOpinions);
+// router.put('/mybookings/', [verifyToken, istheUser], userController.updatemyBookings);
+// router.put('/myfavorites/', [verifyToken, istheUser], userController.updatemyFavorites);
+// router.put('/myopinions/', [verifyToken, istheUser], userController.updatemyOpinions);
 
 export default router;

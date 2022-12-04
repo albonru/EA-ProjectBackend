@@ -5,16 +5,12 @@ import { Request, Response } from 'express';
 
 const register = async (req: Request, res: Response) => {
 	try {
-		const user = req.body.user_id;
-		const { type, price, size, difficulty,
-			country, city, street, streetNumber, spotNumber } = req.params;
-
-		// const user1 = await User.findOne({ email });
-		// if (!user1) {
-		// 	res.status(400).json({ message: 'User not found',email, user1 });
-		// }
+		const { user_id, type, price, size, difficulty,
+			country, city, street, streetNumber, spotNumber } = req.body;
+		// tslint:disable-next-line:no-console
+		console.log(user_id);
 		const newParking = new Parking({
-			user,
+			user_id,
 			type,
 			price,
 			size,
@@ -29,7 +25,7 @@ const register = async (req: Request, res: Response) => {
 		});
 		await newParking.save().catch(Error);
 		await User.updateOne(
-			{ _id: user },
+			{ _id: user_id },
 			{ $addToSet: { myParkings: newParking._id } }
 		);
 		res.status(200).json({ auth: true });
