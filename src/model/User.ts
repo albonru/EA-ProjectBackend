@@ -1,6 +1,9 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
+import { IBooking } from './Booking';
+import { IOpinion } from './Opinion';
+import { IParking } from './Parking';
 
-const User = new Schema({
+const UserSchema = new Schema({
     name: { type: String, required: true },
     password: { type: String, required: true },
 	email: { type: String, unique: true, required: true },
@@ -12,13 +15,16 @@ const User = new Schema({
     deleted: { type: Boolean, required: true }
 });
 
-// interface IUser {
-//     name: string;
-//     password: string;
-//     email: string;
-//     points: number;
-//     deleted: boolean;
-// }
+export interface IUser extends Document{
+    name: string;
+    password: string;
+    email: string;
+    points: number;
+    deleted: boolean;
+    myBookings: IBooking[];
+    myOpinions: IOpinion[];
+    myFavourites: IParking[];
+    myParkings: IParking[];
+}
 
-// const IUser = model<IUser>('User', User);
-export default model('User', User);
+export default mongoose.model<IUser>('User', UserSchema);

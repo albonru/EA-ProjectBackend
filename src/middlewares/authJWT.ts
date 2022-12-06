@@ -6,7 +6,6 @@ import IJwtPayload from '../model/JWTPayload';
 
 const _SECRET: string = 'clavesecreta';
 
-
 export async function verifyToken (req: Request, res: Response, next: NextFunction) {
     const token = req.header("x-access-token");
     if (!token) return res.status(403).json({ message: "No token provided" });
@@ -16,7 +15,6 @@ export async function verifyToken (req: Request, res: Response, next: NextFuncti
     req.params.user_id = decoded.user_id;
     const user = await User.findById(req.params.user_id, { password: 0 });
     if (!user) return res.status(404).json({ message: "No user found" });
-
 
     next();
 
