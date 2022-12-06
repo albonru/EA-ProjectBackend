@@ -7,7 +7,7 @@ const register = async (req: Request, res: Response) => {
 	try {
 		const user = req.params.user_id;
 		const { email, type, price, size, difficulty,
-			country, city, street, streetNumber, spotNumber } = req.params;
+			country, city, street, streetNumber, spotNumber } = req.body;
 
 		const user1 = await User.findOne({ email });
 		if (!user1) {
