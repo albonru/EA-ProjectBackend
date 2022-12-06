@@ -1,4 +1,4 @@
-import Parking from '../model/Parking';
+import Parking, { IParking } from '../model/Parking';
 import User from '../model/User';
 import { Request, Response } from 'express';
 
@@ -7,10 +7,8 @@ const register = async (req: Request, res: Response) => {
 	try {
 		const { user_id, type, price, size, difficulty,
 			country, city, street, streetNumber, spotNumber } = req.body;
-		// tslint:disable-next-line:no-console
-		console.log(user_id);
 		const newParking = new Parking({
-			user_id,
+			user: user_id,
 			type,
 			price,
 			size,
@@ -58,6 +56,43 @@ const getall = async (req: Request, res: Response) => {
 	const parkings = await Parking.find(); // .populate('user');
 	res.json(parkings);
 };
+
+const filter = async (req: Request, res: Response) => {
+	const { pmax, pmin, smax, type, size, sortby } = req.body;
+	const allparkings: IParking[] = await Parking.find();
+	const filteredparkings: IParking[] = [];
+	for (const p of allparkings) {
+		if ((p.price <= pmax) && (p.price >= pmin) && (p.score <= smax)
+				&& (p.type === type) && (p.size === size)) {
+			filteredparkings.push(p);
+		}
+	}
+	// de major a menor
+	if (sortby === "score") {
+		filteredparkings.sort(function (a, b) {
+			if (a.score > b.score) {
+				return -1;
+			}
+			if (a.score < b.score) {
+				return 1;
+			}
+			return 0;
+		});
+	}
+	// de menor a major
+	if (sortby === "price") {
+		filteredparkings.sort(function (a, b) {
+			if (a.price < b.price) {
+				return -1;
+			}
+			if (a.price > b.price) {
+				return 1;
+			}
+			return 0;
+		});
+	}
+	res.json(filteredparkings);
+}
 
 const getOne = async (req: Request, res: Response) => {
 	try {
@@ -108,6 +143,7 @@ export default {
 	register,
 	cancel,
 	getall,
+	filter,
 	getOne,
 	update,
 	updateAddress

@@ -118,107 +118,6 @@ const activate = async (req: Request, res: Response) => {
 	}
 }
 
-// const getmyOpinions = async (req: Request, res: Response) => {
-// 	try {
-// 		const user = await User.findById(req.params.users_id);
-// 		res.json(user.myOpinions);
-// 	}
-// 	catch (err) {
-// 		res.status(400).send({ message: 'User not found', err });
-// 	}
-// }
-// const getmyFavorites = async (req: Request, res: Response) => {
-// 	try {
-// 		const user = await User.findById(req.params.user_id);
-// 		res.json(user.myFavorites);
-// 	}
-// 	catch (err) {
-// 		res.status(400).send({ message: 'User not found', err });
-// 	}
-// }
-// const getmyParkings = async (req: Request, res: Response) => {
-// 	try {
-// 		const user = await User.findById(req.params.user_id);
-// 		res.json(user.myParkings);
-// 	}
-// 	catch (err) {
-// 		res.status(400).send({ message: 'User not found', err });
-// 	}
-// }
-// const getmyBookings = async (req: Request, res: Response) => {
-// 	try {
-// 		const user = await User.findById(req.params.user_id);
-// 		res.json(user.myBookings);
-// 	}
-// 	catch (err) {
-// 		res.status(400).send({ message: 'User not found', err });
-// 	}
-// }
-// const updatemyOpinions = async (req: Request, res: Response) => {
-// 	try {
-// 		const _id = req.params.user_id;
-// 		const { parking_id, date, description, points } = req.body;
-// 		const user1 = User.findById(_id);
-// 		const parking1 = Parking.findById(parking_id);
-// 		const newOpinion = new Opinion({
-// 			user: (await user1)._id,
-// 			parking: (await parking1)._id,
-// 			date,
-// 			description,
-// 			points
-// 		});
-// 		await newOpinion.save().catch(Error);
-// 		await User.updateOne(
-// 			{ _id: user1 },
-// 			{ $addToSet: { myOpinions: newOpinion._id } }
-// 		);
-// 		res.status(200).json({ auth: true });
-// 	}
-// 	catch (err) {
-// 		res.status(400).send({ message: 'Cannot update my opinions list', err });
-// 	}
-// }
-// const updatemyBookings = async (req: Request, res: Response) => {
-// 	try {
-// 		const _id = req.params.user_id;
-// 		const { parking_id, arrival, departure, cost } = req.body;
-// 		const user1 = User.findById(_id);
-// 		const parking1 = Parking.findById(parking_id);
-// 		const newBooking = new Booking({
-// 			customer: (await user1)._id,
-// 			parking: (await parking1)._id,
-// 			arrival,
-// 			departure,
-// 			cost
-// 		});
-// 		await newBooking.save().catch(Error);
-// 		await User.updateOne(
-// 			{ _id: user1 },
-// 			{ $addToSet: { myBookings: newBooking._id } }
-// 		);
-// 		res.status(200).json({ auth: true });
-// 	}
-// 	catch (err) {
-// 		res.status(400).send({ message: 'Cannot update my booking list', err });
-// 	}
-// }
-// const updatemyFavorites = async (req: Request, res: Response) => {
-// 	try {
-// 		const _id = req.params.user_id;
-// 		const { parking_id } = req.body;
-// 		const user1 = User.findById(_id);
-// 		const parking1 = Parking.findById(parking_id);
-// 		await User.updateOne(
-// 			{ _id: user1 },
-// 			{ $addToSet: { myFavorites: parking_id } }
-// 		);
-// 		res.status(200).json({ auth: true });
-// 	}
-// 	catch (err) {
-// 		res.status(400).send({ message: 'Cannot update my favorite list', err });
-// 	}
-// }
-
 export default {
 	register,
 	profile,
@@ -227,11 +126,4 @@ export default {
 	update,
 	deleteUser,
 	activate
-	// getmyOpinions,
-	// getmyFavorites,
-	// getmyParkings,
-	// getmyBookings,
-	// updatemyOpinions,
-	// updatemyBookings,
-	// updatemyFavorites
 };
