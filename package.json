@@ -23,7 +23,8 @@
     "express": "^4.18.1",
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.6.5"
+    "mongoose": "^6.6.5",
+    "moongose": "^1.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

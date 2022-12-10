@@ -26,6 +26,7 @@ const register = async (req: Request, res: Response) => {
 			{ _id: user_id },
 			{ $addToSet: { myParkings: newParking._id } }
 		);
+
 		res.status(200).json({ auth: true });
 	}
 	catch {
@@ -106,13 +107,10 @@ const getOne = async (req: Request, res: Response) => {
 
 const update = async (req: Request, res: Response) => {
 	const _id = req.body.id;
-	const { type, price, size, difficulty } = req.body;
+	const {price} = req.body;
 	try {
 		const parking = await Parking.findByIdAndUpdate(_id, {
-			type,
-			price,
-			size,
-			difficulty
+			price
 		}, {new: true});
 		return res.json(parking);
 	}
