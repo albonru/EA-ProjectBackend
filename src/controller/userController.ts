@@ -70,11 +70,12 @@ const changePass = async (req: Request, res: Response) => {
 
 const update = async (req: Request, res: Response) => {
 	const _id = req.params.user_id;
-	const { name, email } = req.body;
+	const { name, email, password } = req.body;
 	try {
 		const user = await User.findByIdAndUpdate(_id, {
 			name,
-			email
+			email,
+			password
 		}, { new: true });
 		return res.json(user);
 	}

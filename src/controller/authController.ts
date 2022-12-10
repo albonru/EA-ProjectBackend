@@ -21,7 +21,8 @@ try {
         const token = jwt.sign(session, _SECRET, {
             expiresIn: 86400, // 24 hours
         });
-        return res.json({ auth: true, token });
+        const id = userFound.id;
+        return res.json({ auth: true, token, id });
     }
     return res.status(401).json({ auth: false, token: null });
     }
