@@ -68,14 +68,26 @@ const changePass = async (req: Request, res: Response) => {
 	}
 };
 
-const update = async (req: Request, res: Response) => {
+const updateName = async (req: Request, res: Response) => {
 	const _id = req.params.user_id;
-	const { name, email, password } = req.body;
+	const name = req.body.name;
 	try {
 		const user = await User.findByIdAndUpdate(_id, {
-			name,
-			email,
-			password
+			name
+		}, { new: true });
+		return res.json(user);
+	}
+	catch (err) {
+		res.status(400).json({ message: 'User not found', err });
+	}
+}
+
+const updateEmail = async (req: Request, res: Response) => {
+	const _id = req.params.user_id;
+	const email = req.body.email;
+	try {
+		const user = await User.findByIdAndUpdate(_id, {
+			email
 		}, { new: true });
 		return res.json(user);
 	}
@@ -124,7 +136,8 @@ export default {
 	profile,
 	getall,
 	changePass,
-	update,
+	updateName,
+	updateEmail,
 	deleteUser,
 	activate
 };
