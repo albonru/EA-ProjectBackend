@@ -125,7 +125,9 @@ const deleteUser = async (req: Request, res: Response) => {
 }
 
 const activate = async (req: Request, res: Response) => {
-	const _id = req.params.user_id;
+	const email = req.body.email;
+	const user1 = await User.findOne({email});
+	const _id = user1._id;
 		try {
 		const user = await User.findByIdAndUpdate(_id, {
 			deleted: false

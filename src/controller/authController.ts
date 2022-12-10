@@ -24,7 +24,7 @@ try {
         const id = userFound.id;
         return res.json({ auth: true, token, id });
     }
-    return res.status(402).json({ auth: false, token: null });
+    return res.status(401).json({ auth: false, token: null });
     }
     catch(err) {
         res.status(404).send('Cant find user');
