@@ -51,13 +51,16 @@ const getall = async (req: Request, res: Response) => {
 
 const changePass = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params.id);
-		if (req.body.password === CryptoJS.AES.decrypt(user.password as string, 'secret key 123').toString(CryptoJS.enc.Utf8)) {
+		const user = await User.findById(req.body._id);
+		const comp1 = String(req.body.password);
+		const comp2 = String(CryptoJS.AES.decrypt(user.password as string, 'secret key 123').toString(CryptoJS.enc.Utf8));
+		const equals = comp1.localeCompare(comp2);
+		if (equals === 0) {
 			let newpassword = req.body.newpassword;
 			newpassword = CryptoJS.AES.encrypt(newpassword, 'secret key 123').toString();
 			user.password = newpassword;
 			await user.save();
-			res.json({ status: 'User Updated' });
+			res.status(200).json({ status: 'User Updated' });
 		}
 		else {
 			res.json({ status: 'Wrong password' });
@@ -68,12 +71,25 @@ const changePass = async (req: Request, res: Response) => {
 	}
 };
 
-const update = async (req: Request, res: Response) => {
+const updateName = async (req: Request, res: Response) => {
 	const _id = req.params.user_id;
-	const { name, email } = req.body;
+	const name = req.body.name;
 	try {
 		const user = await User.findByIdAndUpdate(_id, {
-			name,
+			name
+		}, { new: true });
+		return res.json(user);
+	}
+	catch (err) {
+		res.status(400).json({ message: 'User not found', err });
+	}
+}
+
+const updateEmail = async (req: Request, res: Response) => {
+	const _id = req.params.user_id;
+	const email = req.body.email;
+	try {
+		const user = await User.findByIdAndUpdate(_id, {
 			email
 		}, { new: true });
 		return res.json(user);
@@ -89,6 +105,7 @@ const deleteUser = async (req: Request, res: Response) => {
 		const user = await User.findByIdAndUpdate(_id, {
 			deleted: true
 		}, { new: true });
+		try{
 		const parkings = user.myParkings;
 		for (const p of parkings) {
 			const parking = await Parking.findById(p);
@@ -98,7 +115,9 @@ const deleteUser = async (req: Request, res: Response) => {
 				{ $pull: { myParkings: parking._id } }
 			);
 		}
-		return res.json(user);
+	}
+	catch{return res.status(200).json(user);}
+	return res.status(200).json(user);
 	}
 	catch (err) {
 		res.status(400).json({ message: 'User not found', err });
@@ -123,7 +142,8 @@ export default {
 	profile,
 	getall,
 	changePass,
-	update,
+	updateName,
+	updateEmail,
 	deleteUser,
 	activate
 };
