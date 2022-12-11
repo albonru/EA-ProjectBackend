@@ -25,9 +25,9 @@ export async function verifyToken (req: Request, res: Response, next: NextFuncti
 
 export async function isOwner (req: Request, res: Response, next: NextFunction) {
   try {
-    const { id } = req.body;
+    const { _id } = req.body;
     const user = await User.findById(req.params.user_id);
-    const parking = await Parking.findById(id);
+    const parking = await Parking.findById(_id);
 
     if (!parking) {return res.status(403).json({ message: "No parking found" })};
 const comp = String(parking.user);

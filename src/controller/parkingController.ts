@@ -36,7 +36,7 @@ const register = async (req: Request, res: Response) => {
 
 const cancel = async (req: Request, res: Response) => {
 	try {
-		const _id = req.body.id;
+		const _id = req.body._id;
 		const parking = await Parking.findById(_id)
 		if (!parking) {
 			res.status(400).json({ message: 'Parking not found' });
@@ -106,13 +106,15 @@ const getOne = async (req: Request, res: Response) => {
 }
 
 const update = async (req: Request, res: Response) => {
-	const _id = req.body.id;
-	const {price} = req.body;
+	const _id = req.body._id;
+	const { price } = req.body;
 	try {
 		const parking = await Parking.findByIdAndUpdate(_id, {
 			price
-		}, {new: true});
+		},
+		{new: true});
 		return res.json(parking);
+
 	}
 	catch (err) {
 		res.status(400).send({ message: 'Cannot update parking', err });
@@ -121,7 +123,7 @@ const update = async (req: Request, res: Response) => {
 
 const updateAddress = async (req: Request, res: Response) => {
 	try {
-		const _id = req.body.id;
+		const _id = req.body._id;
 		const { country, city, street, streetNumber, spotNumber } = req.body;
 		const parking = await Parking.findByIdAndUpdate(_id, {
 			country,
