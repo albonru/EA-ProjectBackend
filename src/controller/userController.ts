@@ -100,24 +100,24 @@ const updateEmail = async (req: Request, res: Response) => {
 }
 
 const deleteUser = async (req: Request, res: Response) => {
-		const _id = req.params.user_id;
-		try {
+	const _id = req.params.user_id;
+	try {
 		const user = await User.findByIdAndUpdate(_id, {
 			deleted: true
 		}, { new: true });
-		try{
-		const parkings = user.myParkings;
-		for (const p of parkings) {
-			const parking = await Parking.findById(p);
-			await Parking.findByIdAndDelete(p).catch(Error);
-			await User.updateOne(
-				{ _id: parking.user },
-				{ $pull: { myParkings: parking._id } }
-			);
+		try {
+			const parkings = user.myParkings;
+			for (const p of parkings) {
+				const parking = await Parking.findById(p);
+				await Parking.findByIdAndDelete(p).catch(Error);
+				await User.updateOne(
+					{ _id: parking.user },
+					{ $pull: { myParkings: parking._id } }
+				);
+			}
 		}
-	}
-	catch{return res.status(200).json(user);}
-	return res.status(200).json(user);
+		catch { return res.status(200).json(user); }
+		return res.status(200).json(user);
 	}
 	catch (err) {
 		res.status(400).json({ message: 'User not found', err });
@@ -126,9 +126,9 @@ const deleteUser = async (req: Request, res: Response) => {
 
 const activate = async (req: Request, res: Response) => {
 	const email = req.body.email;
-	const user1 = await User.findOne({email});
+	const user1 = await User.findOne({ email });
 	const _id = user1._id;
-		try {
+	try {
 		const user = await User.findByIdAndUpdate(_id, {
 			deleted: false
 		}, { new: true });
@@ -141,12 +141,16 @@ const activate = async (req: Request, res: Response) => {
 
 const checkemail = async (req: Request, res: Response) => {
 	const email = req.body.email;
-	const user1 = await User.findOne({email});
-	if (user1.id != null){
-		res.status(409).json({ status: 'Email alredy in use!' });
-	}
-	else{
-		res.status(200).json({ status: 'Email adress is free!' });
+	try {
+		const user1 = await User.findOne({ email });
+		if (user1.id != null) {
+			res.status(409).json({ status: 'Email already in use!' });
+		}
+		else {
+			res.status(200).json({ status: 'Email adress is free!' });
+		}
+	} catch (err) {
+		res.status(200).json({ message: 'User not found', err });
 	}
 }
 
