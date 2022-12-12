@@ -13,5 +13,6 @@ router.put('/updateName', [verifyToken], userController.updateName); // OK
 router.put('/updateEmail', [verifyToken], userController.updateEmail); // OK
 router.put('/activate', userController.activate); // OK
 router.delete('/', [verifyToken], userController.deleteUser); // OK
+router.get('/checkemail', userController.checkemail); // OK
 
 export default router;

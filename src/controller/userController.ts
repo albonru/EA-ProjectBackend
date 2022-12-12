@@ -139,6 +139,17 @@ const activate = async (req: Request, res: Response) => {
 	}
 }
 
+const checkemail = async (req: Request, res: Response) => {
+	const email = req.body.email;
+	const user1 = await User.findOne({email});
+	if (user1.id != null){
+		res.status(409).json({ status: 'Email alredy in use!' });
+	}
+	else{
+		res.status(200).json({ status: 'Email adress is free!' });
+	}
+}
+
 export default {
 	register,
 	profile,
@@ -147,5 +158,6 @@ export default {
 	updateName,
 	updateEmail,
 	deleteUser,
-	activate
+	activate,
+	checkemail
 };
