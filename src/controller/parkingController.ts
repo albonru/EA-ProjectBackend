@@ -5,10 +5,10 @@ import { Request, Response } from 'express';
 
 const register = async (req: Request, res: Response) => {
 	try {
-		const { user_id, type, price, size, difficulty,
+		const { type, price, size, difficulty,
 			country, city, street, streetNumber, spotNumber } = req.body;
 		const newParking = new Parking({
-			user: user_id,
+			user: req.params.user_id,
 			type,
 			price,
 			size,
@@ -23,7 +23,7 @@ const register = async (req: Request, res: Response) => {
 		});
 		await newParking.save().catch(Error);
 		await User.updateOne(
-			{ _id: user_id },
+			{ _id: req.params.user_id },
 			{ $addToSet: { myParkings: newParking._id } }
 		);
 
