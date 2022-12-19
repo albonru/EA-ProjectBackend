@@ -59,11 +59,11 @@ const getall = async (req: Request, res: Response) => {
 };
 
 const filter = async (req: Request, res: Response) => {
-	const { pmax, pmin, smax, type, size, sortby } = req.body;
+	const { pmax, pmin, smin, type, size, sortby } = req.body;
 	const allparkings: IParking[] = await Parking.find();
 	const filteredparkings: IParking[] = [];
 	for (const p of allparkings) {
-		if ((p.price <= pmax) && (p.price >= pmin) && (p.score <= smax)
+		if ((p.price <= pmax) && (p.price >= pmin) && (p.score >= smin)
 				&& (p.type === type) && (p.size === size)) {
 			filteredparkings.push(p);
 		}
