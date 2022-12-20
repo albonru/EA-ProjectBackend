@@ -36,7 +36,7 @@ const register = async (req: Request, res: Response) => {
 
 const profile = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params.id, { password: 0 }).populate('myParkings');
+		const user = await User.findById(req.params.id, { password: 0 }).populate('myParkings').populate('myBookings');
 		res.json(user);
 	}
 	catch (err) {

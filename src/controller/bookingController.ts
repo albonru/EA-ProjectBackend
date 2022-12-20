@@ -4,19 +4,18 @@ import Parking from '../model/Parking';
 import { Request, Response } from 'express';
 
 const book = async (req: Request, res: Response) => {
-	const { user, parking, arrival, departure } = req.body;
+	const { parking, arrival, departure } = req.body;
 	try {
-		const customer = await User.findOne({ email: user });
 		const parking1 = await Parking.findById(parking);
 		const newBooking = new Booking({
 			parking: parking1._id,
-			customer: customer._id,
+			customer: req.params.user_id,
 			arrival,
 			departure,
 		});
 		await newBooking.save();
 		await User.updateOne(
-			{ email: user },
+			{ _id: req.params.user_id },
 			{ $addToSet: { myBookings: newBooking._id } }
 		);
 		res.status(200).json({ auth: true });
@@ -59,7 +58,7 @@ const getall = async (req: Request, res: Response) => {
 
 const getone = async (req: Request, res: Response) => {
 	try {
-		const booking = await Booking.findById(req.params.id); // .populate('customer').populate('parking');
+		const booking = await Booking.findById(req.params.id).populate('parking');
 		res.json(booking);
 	}
 	catch(err) {

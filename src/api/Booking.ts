@@ -1,11 +1,11 @@
 import bookingController from '../controller/bookingController';
 import { Router } from 'express';
+import { isOwner, verifyToken } from '../middlewares/authJWT';
 
 const router = Router();
 
-// FALTA FER VERIFY
-router.post('/', bookingController.book);  // OK
-router.delete('/:id', bookingController.cancel); // OK
+router.post('/', [verifyToken], bookingController.book);  // OK
+router.delete('/', [verifyToken, isOwner], bookingController.cancel); // OK
 router.get('/', bookingController.getall); // OK
 router.get('/:id', bookingController.getone); // OK
 
