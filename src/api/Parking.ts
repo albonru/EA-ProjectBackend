@@ -10,6 +10,7 @@ router.get('/', parkingController.getall); // OK
 router.post('/filter', parkingController.filter); // OK
 router.put('/update/', [verifyToken, isOwner], parkingController.update); // OK
 router.put('/updateAddress/', [verifyToken, isOwner], parkingController.updateAddress); // OK
-router.get('/:id',parkingController.getOne); // OK
+router.get('/:id', parkingController.getOne); // OK
+router.get('byStreet/:street', parkingController.getByStreet);
 
 export default router;

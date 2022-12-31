@@ -7,7 +7,8 @@ const BookingSchema = new Schema({
 	customer: { type: Schema.Types.ObjectId, ref: "User" },
 	arrival: Date,
 	departure: Date,
-	cost: Number
+	cost: Number,
+	owner: { type: Schema.Types.ObjectId, ref: "User" }
 });
 
 export interface IBooking extends Document {
@@ -16,6 +17,7 @@ export interface IBooking extends Document {
 	arrival: Date;
 	departure: Date;
 	cost: number;
+	owner: IUser;
 }
 
 export default mongoose.model<IBooking>('Booking', BookingSchema);

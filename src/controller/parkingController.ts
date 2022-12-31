@@ -62,13 +62,41 @@ const filter = async (req: Request, res: Response) => {
 	const { pmax, pmin, smin, type, size, sortby } = req.body;
 	const allparkings: IParking[] = await Parking.find();
 	const filteredparkings: IParking[] = [];
+	if (type === 'any' && size === 'any') {
+		for (const p of allparkings) {
+			if ((p.price <= pmax) && (p.price >= pmin) && (p.score >= smin)) {
+				filteredparkings.push(p);
+			}
+		}
+	} else if (type === 'any' && size !== 'any') {
+		for (const p of allparkings) {
+			if ((p.price <= pmax) && (p.price >= pmin) && (p.score >= smin)
+					&& (p.size === size)) {
+				filteredparkings.push(p);
+			}
+		}
+	}
+	else if (type !== 'any' && size === 'any') {
+		for (const p of allparkings) {
+			if ((p.price <= pmax) && (p.price >= pmin) && (p.score >= smin)
+					&& (p.type === type)) {
+				filteredparkings.push(p);
+			}
+		}
+	} else {
+		for (const p of allparkings) {
+			if ((p.price <= pmax) && (p.price >= pmin) && (p.score >= smin)
+					&& (p.type === type) && (p.size === size)) {
+				filteredparkings.push(p);
+			}
+		}
+	}
 	for (const p of allparkings) {
 		if ((p.price <= pmax) && (p.price >= pmin) && (p.score >= smin)
 				&& (p.type === type) && (p.size === size)) {
 			filteredparkings.push(p);
 		}
 	}
-	// de major a menor
 	if (sortby === "score") {
 		filteredparkings.sort(function (a, b) {
 			if (a.score > b.score) {
@@ -80,7 +108,6 @@ const filter = async (req: Request, res: Response) => {
 			return 0;
 		});
 	}
-	// de menor a major
 	if (sortby === "price") {
 		filteredparkings.sort(function (a, b) {
 			if (a.price < b.price) {
@@ -98,6 +125,17 @@ const filter = async (req: Request, res: Response) => {
 const getOne = async (req: Request, res: Response) => {
 	try {
 		const parking = await Parking.findById(req.params.id);
+		res.json(parking);
+	}
+	catch (err) {
+		res.status(400).send({ message: 'Parking not found', err });
+	}
+}
+
+const getByStreet = async (req: Request, res: Response) => {
+	const street = req.params.street;
+	try {
+		const parking = await Parking.findOne({ street });
 		res.json(parking);
 	}
 	catch (err) {
@@ -145,6 +183,7 @@ export default {
 	getall,
 	filter,
 	getOne,
+	getByStreet,
 	update,
 	updateAddress
 };
