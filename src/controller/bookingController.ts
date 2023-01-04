@@ -38,9 +38,9 @@ const cancel = async (req: Request, res: Response) => {
 	}
 	try {
 		const booking1 = await Booking.findById(req.body._id);
-		if ((booking1.customer._id !== req.params.user_id) || (booking1.owner._id !== req.params.user_id)) {
-			return res.status(403).send({ message: 'Unauthorised!!!'} );
-		}
+		// if ((booking1.customer._id !== req.params.user_id) && (booking1.owner._id !== req.params.user_id)) {
+		// 	return res.status(403).send({ message: 'Unauthorised!!!'} );
+		// }
 		await User.updateOne(
 			{ _id: booking1.customer },
 			{ $pull: { myBookings: booking1._id } }
