@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 const register = async (req: Request, res: Response) => {
 	try {
 		const { type, price, size, difficulty,
-			country, city, street, streetNumber, spotNumber } = req.body;
+			country, city, street, streetNumber, spotNumber, longitude, latitude } = req.body;
 		const newParking = new Parking({
 			user: req.params.user_id,
 			type,
@@ -19,7 +19,9 @@ const register = async (req: Request, res: Response) => {
 			streetNumber,
 			spotNumber,
 			opinions: [],
-			score: 0
+			score: 0,
+			longitude,
+			latitude
 		});
 		await newParking.save().catch(Error);
 		await User.updateOne(
@@ -176,7 +178,15 @@ const updateAddress = async (req: Request, res: Response) => {
 		res.status(400).send({ message: 'Cannot update parking address', err });
 	}
 }
-
+const getLocation = async (req: Request, res: Response) => {
+	try {
+		const parking = await Parking.findById(req.params.id);
+		res.json(parking);
+	}
+	catch (err) {
+		res.status(400).send({ message: 'Parking not found', err });
+	}
+}
 export default {
 	register,
 	cancel,
@@ -185,5 +195,6 @@ export default {
 	getOne,
 	getByStreet,
 	update,
-	updateAddress
+	updateAddress,
+	getLocation
 };

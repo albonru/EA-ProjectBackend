@@ -14,7 +14,9 @@ const ParkingSchema = new Schema({
     price: Number,
     size: String,
     difficulty: Number,
-    score: Number
+    score: Number,
+    longitude: Number,
+    latitude: Number,
 });
 
 export interface IParking extends Document{
@@ -30,6 +32,8 @@ export interface IParking extends Document{
     size: string;
     difficulty: number;
     score: number;
+    latitude: number;
+    longitude: number;
 }
 
 export default mongoose.model<IParking>('Parking', ParkingSchema);
