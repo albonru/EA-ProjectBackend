@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 const register = async (req: Request, res: Response) => {
 	try {
 		const { type, price, size, difficulty,
-			country, city, street, streetNumber, spotNumber, longitude, latitude } = req.body;
+			country, city, street, streetNumber, spotNumber, longitude, latitude, range} = req.body;
 		const newParking = new Parking({
 			user: req.params.user_id,
 			type,
@@ -21,7 +21,8 @@ const register = async (req: Request, res: Response) => {
 			opinions: [],
 			score: 0,
 			longitude,
-			latitude
+			latitude,
+			range
 		});
 		await newParking.save().catch(Error);
 		await User.updateOne(
