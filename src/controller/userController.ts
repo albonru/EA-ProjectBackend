@@ -36,7 +36,7 @@ const register = async (req: Request, res: Response) => {
 
 const profile = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params.id, { password: 0 }).populate('myParkings').populate('myBookings');
+		const user = await User.findById(req.params.id, { password: 0 }).populate('myParkings myBookings myFavorites');
 		res.json(user);
 	}
 	catch (err) {
@@ -153,6 +153,42 @@ const checkemail = async (req: Request, res: Response) => {
 		res.status(200).json({ message: 'User not found', err });
 	}
 }
+const AddtomyFavorites = async(req: Request, res: Response) => {
+	try {
+		const _id = req.body._id;
+		const parking = await Parking.findById(_id)
+		if (!parking) {
+			res.status(400).json({ message: 'Parking not found' });
+		}
+		await User.updateOne(
+			{ _id: req.params.user_id },
+			{ $addToSet: { myFavorites: parking._id } }
+		);
+		res.status(200).json({ auth: true });
+	}
+	catch (err) {
+		res.status(400).json({ message: 'Error', err });
+	}
+
+
+};
+const cancelMyFavorite = async (req: Request, res: Response) => {
+	try {
+		const _id = req.body._id;
+		const parking = await Parking.findById(_id)
+		if (!parking) {
+			res.status(400).json({ message: 'Parking not found' });
+		}
+		await User.updateOne(
+			{ _id: req.params.user_id },
+			{ $pull: { myFavorites: parking._id } }
+		);
+		res.status(200).json({ auth: true });
+	}
+	catch (err) {
+		res.status(400).json({ message: 'Error', err });
+	}
+};
 
 export default {
 	register,
@@ -163,5 +199,7 @@ export default {
 	updateEmail,
 	deleteUser,
 	activate,
-	checkemail
+	checkemail,
+	AddtomyFavorites,
+	cancelMyFavorite
 };
