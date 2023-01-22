@@ -62,9 +62,9 @@ const getall = async (req: Request, res: Response) => {
 };
 
 const filter = async (req: Request, res: Response) => {
-	const { pmax, pmin, smin, type, size, sortby } = req.body;
+	const { pmax, pmin, smin, type, size, sortby, firstdate, lastdate } = req.body;
 	const allparkings: IParking[] = await Parking.find();
-	const filteredparkings: IParking[] = [];
+	let filteredparkings: IParking[] = [];
 	if (type === 'any' && size === 'any') {
 		for (const p of allparkings) {
 			if ((p.price <= pmax) && (p.price >= pmin) && (p.score >= smin)) {
@@ -98,6 +98,16 @@ const filter = async (req: Request, res: Response) => {
 		if ((p.price <= pmax) && (p.price >= pmin) && (p.score >= smin)
 				&& (p.type === type) && (p.size === size)) {
 			filteredparkings.push(p);
+		}
+	}
+	if (firstdate !== '') {
+		for (const p of filteredparkings) {
+			const partsrange = p.range.split(' - ');
+			const rangefirst = partsrange[0].split('/');
+			const rangelast = partsrange[1].split('/');
+			if ((rangefirst > firstdate) || (rangelast < lastdate)) {
+				filteredparkings = filteredparkings.filter(d => d._id !== p._id);
+			}
 		}
 	}
 	if (sortby === "score") {
