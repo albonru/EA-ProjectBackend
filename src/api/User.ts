@@ -15,5 +15,7 @@ router.delete('/', [verifyToken], userController.deleteUser); // OK
 router.put('/checkemail', userController.checkemail); // OK
 router.put('/addFav',[verifyToken], userController.AddtomyFavorites);// OK
 router.put('/delFav',[verifyToken], userController.cancelMyFavorite);
+router.post('/registergoogle', userController.registergoogle);
+router.post('/logingoogle', userController.logingoogle);
 
 export default router;
