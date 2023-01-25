@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import Opinion from '../model/Opinion';
 import Booking from '../model/Booking';
 import Parking from '../model/Parking';
+import IJwtPayload from '../model/JWTPayload';
 
 const register = async (req: Request, res: Response) => {
 	const name = req.body.name;
@@ -34,9 +35,60 @@ const register = async (req: Request, res: Response) => {
 	res.status(200).json({ auth: true, token });
 };
 
+const registergoogle = async (req: Request, res: Response) => {
+	const name = req.body.name;
+	const email = req.body.email;
+	const u = await User.findOne({ email });
+	if (u) {
+		return res.status(400).json({ message: 'Already registered'});
+	}
+	const password1 = CryptoJS.AES.encrypt(req.body.password, 'secret key 123').toString();
+	const newUser1 = new User({
+		name,
+		email,
+		password: password1,
+		points: 0,
+		myBookings: [],
+		myFavorites: [],
+		myOpinions: [],
+		myParkings: [],
+		deleted: false
+	});
+	try {
+		newUser1.save();
+	}
+	catch(err) {
+		res.status(500).json({ message: 'Could not create user', err });
+	}
+	const token = jwt.sign({ id: newUser1._id }, 'yyt#KInN7Q9X3m&$ydtbZ7Z4fJiEtA6uHIFzvc@347SGHAjV4E', {
+		expiresIn: 60 * 60 * 24
+	});
+	res.status(200).json({ auth: true, token });
+}
+
+const logingoogle = async (req: Request, res: Response) => {
+	const email = req.body.email;
+	try {
+		const user2 = await User.findOne({ email });
+		if (!user2) return res.status(404).json({ message: 'User not found' });
+		if (user2.deleted) {
+			user2.deleted = false;
+		}
+		const sessio = { 'user_id': user2.id } as IJwtPayload;
+        const token = jwt.sign(sessio, 'clavesecreta', {
+            expiresIn: 86400, // 24 hours
+        });
+        const id = user2.id;
+        return res.status(200).json({ auth: true, token, id });
+	}
+	catch(err) {
+		res.status(500).send('Internal server error');
+	}
+}
+
 const profile = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findById(req.params.id, { password: 0 }).populate('myParkings').populate('myBookings');
+		const user = await User.findById(req.params.id, { password: 0 }).populate('myParkings myBookings myFavorites');
 		res.json(user);
 	}
 	catch (err) {
@@ -153,9 +205,47 @@ const checkemail = async (req: Request, res: Response) => {
 		res.status(200).json({ message: 'User not found', err });
 	}
 }
+const AddtomyFavorites = async(req: Request, res: Response) => {
+	try {
+		const _id = req.body._id;
+		const parking = await Parking.findById(_id)
+		if (!parking) {
+			res.status(400).json({ message: 'Parking not found' });
+		}
+		await User.updateOne(
+			{ _id: req.params.user_id },
+			{ $addToSet: { myFavorites: parking._id } }
+		);
+		res.status(200).json({ auth: true });
+	}
+	catch (err) {
+		res.status(400).json({ message: 'Error', err });
+	}
+
+
+};
+const cancelMyFavorite = async (req: Request, res: Response) => {
+	try {
+		const _id = req.body._id;
+		const parking = await Parking.findById(_id)
+		if (!parking) {
+			res.status(400).json({ message: 'Parking not found' });
+		}
+		await User.updateOne(
+			{ _id: req.params.user_id },
+			{ $pull: { myFavorites: parking._id } }
+		);
+		res.status(200).json({ auth: true });
+	}
+	catch (err) {
+		res.status(400).json({ message: 'Error', err });
+	}
+};
 
 export default {
 	register,
+	registergoogle,
+	logingoogle,
 	profile,
 	getall,
 	changePass,
@@ -163,5 +253,7 @@ export default {
 	updateEmail,
 	deleteUser,
 	activate,
-	checkemail
+	checkemail,
+	AddtomyFavorites,
+	cancelMyFavorite
 };
