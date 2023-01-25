@@ -9,6 +9,7 @@ import Opinion from "./api/Opinion";
 import Message from "./api/Message";
 import Chat from "./api/Chat";
 import auth from "./api/auth";
+import Report from "./api/Report";
 
 const app = express();
 const port = process.env.PORT || 5432;
@@ -24,6 +25,7 @@ app.use('/api/parkings', Parking)
 app.use('/api/opinions', Opinion)
 app.use('/api/messages', Message)
 app.use('/api/chats', Chat)
+app.use('/api/reports', Report)
 
 app.get('/', ( req: express.Request, res: express.Response ) => {
 	res.send('Hello World!')
