@@ -17,5 +17,7 @@ router.put('/addFav',[verifyToken], userController.AddtomyFavorites);// OK
 router.put('/delFav',[verifyToken], userController.cancelMyFavorite);
 router.post('/registergoogle', userController.registergoogle);
 router.post('/logingoogle', userController.logingoogle);
+router.put('/getchats', [verifyToken], userController.getchats);
+router.put('/getchat', [verifyToken], userController.getchat);
 
 export default router;

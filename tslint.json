@@ -6,7 +6,8 @@
     "jsRules": {},
     "rules": {
         "trailing-comma": [ false ],
-        "only-arrow-functions": [false]
+        "only-arrow-functions": [false],
+        "prefer-for-of": false
     },
     "rulesDirectory": []
 }

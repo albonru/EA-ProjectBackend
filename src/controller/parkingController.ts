@@ -198,11 +198,36 @@ const getLocation = async (req: Request, res: Response) => {
 		res.status(400).send({ message: 'Parking not found', err });
 	}
 }
+
+const getowner = async (req: Request, res: Response) => {
+	try{
+		const _id = req.body._id;
+		const parking = await Parking.findById(_id);
+		if(parking != null) {
+			const user = await User.findOne(
+				{ _id: parking.user });
+			if (user!= null){
+			res.status(200).json(user);
+			}
+			else{
+				res.status(401).send({ message: 'Cannot find the parking'});
+			}
+		}
+		else{
+			res.status(402).send({ message: 'Cannot find the parking'});
+		}
+	}
+	catch (err) {
+		res.status(403).send({ message: 'Cannot find the parking', err });
+	}
+}
+
 export default {
 	register,
 	cancel,
 	getall,
 	filter,
+	getowner,
 	getOne,
 	getByStreet,
 	update,

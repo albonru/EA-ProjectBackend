@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import Opinion from '../model/Opinion';
 import Booking from '../model/Booking';
 import Parking from '../model/Parking';
+import Chat, { IChat } from '../model/Chat';
 import IJwtPayload from '../model/JWTPayload';
 
 const register = async (req: Request, res: Response) => {
@@ -242,6 +243,72 @@ const cancelMyFavorite = async (req: Request, res: Response) => {
 	}
 };
 
+const getchats = async (req: Request, res: Response) => {
+	// tslint:disable-next-line:no-console
+	console.log("Ha arribat algo!!!");
+	const chats123 = [];
+try{
+	// tslint:disable-next-line:no-console
+	console.log("HE ENTRAT AL TRY");
+	// tslint:disable-next-line:no-console
+	console.log(req.body._id);
+	const chats = await Chat.find({ $or: [{client1:req.body._id}, {client2:req.body._id}]});
+	chats123.push(chats);
+	// tslint:disable-next-line:no-console
+	console.log("CHATS: ");
+	// tslint:disable-next-line:no-console
+	console.log(chats123);
+	res.status(200).json(chats123);
+	// if(user12 != null) {
+	// 	user12.chats.forEach(async chat => {
+	// 		let chat1 = new Chat();
+	// 		chat1 = await Chat.findById(chat._id).populate('messages');
+	// 		// tslint:disable-next-line:no-console
+	// 		console.log(chat1);
+	// 		if(chat1.id != null){
+	// 		chats123.push(chat1);
+	// 		}
+	// 	});
+	// 	chats123
+	// 	// tslint:disable-next-line:no-console
+	// 	console.log("Ha arribat a aqui!! ");
+	// 	// tslint:disable-next-line:no-console
+	// 	console.log(chats123);
+	// 	res.status(200).json(chats123);
+	// }
+	// else{
+	// 	// tslint:disable-next-line:no-console
+	// 	console.log("HE ENTRAT AL ELSE");
+	// 	res.status(200).json(chats123);
+	// }
+}
+catch{
+	// tslint:disable-next-line:no-console
+	console.log("HE ENTRAT AL CATCH");
+	res.status(200).json(chats123);
+}
+}
+
+
+const getchat = async (req: Request, res: Response) => {
+try{
+	// tslint:disable-next-line:no-console
+	console.log("Ha arribat a aqui!!" + req.body);
+	const {id} = req.body;
+	const chat1 = await Chat.findById(id).populate('messages');
+	// tslint:disable-next-line:no-console
+	console.log(chat1);
+		if(chat1 != null){
+			res.status(200).json(chat1.messages);
+			// tslint:disable-next-line:no-console
+			console.log(chat1.messages);
+		}
+	}
+	catch{
+			res.status(404);
+		}
+	}
+
 export default {
 	register,
 	registergoogle,
@@ -255,5 +322,7 @@ export default {
 	activate,
 	checkemail,
 	AddtomyFavorites,
-	cancelMyFavorite
+	cancelMyFavorite,
+	getchats,
+	getchat
 };

@@ -3,6 +3,7 @@ import { IBooking } from './Booking';
 import { IOpinion } from './Opinion';
 import { IParking } from './Parking';
 import { IReport } from './Report';
+import { IChat } from './Chat';
 
 const UserSchema = new Schema({
     name: { type: String, required: true },
@@ -14,7 +15,8 @@ const UserSchema = new Schema({
     myFavorites: [{ type: Schema.Types.ObjectId, ref: 'Parking'}],
     myParkings: [{ type: Schema.Types.ObjectId, ref: 'Parking'}],
     myReports: [{ type: Schema.Types.ObjectId, ref: 'Report'}],
-    deleted: { type: Boolean, required: true }
+    deleted: { type: Boolean, required: true },
+    chats: [{ type: Schema.Types.ObjectId, ref: 'Chats'}]
 });
 
 export interface IUser extends Document{
@@ -28,6 +30,7 @@ export interface IUser extends Document{
     myFavourites: IParking[];
     myParkings: IParking[];
     myReports: IReport[];
+    chats: IChat[];
 }
 
 export default mongoose.model<IUser>('User', UserSchema);

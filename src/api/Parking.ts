@@ -13,5 +13,6 @@ router.put('/updateAddress/', [verifyToken, isOwner], parkingController.updateAd
 router.get('/:id', parkingController.getOne); // OK
 router.get('byStreet/:street', parkingController.getByStreet);
 router.get('location/:id', parkingController.getLocation);
+router.put('/owner', [verifyToken], parkingController.getowner); // OK
 
 export default router;
