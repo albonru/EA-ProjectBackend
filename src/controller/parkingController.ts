@@ -37,9 +37,63 @@ const register = async (req: Request, res: Response) => {
 	}
 };
 
+const postoffice = async (req: Request, res: Response) => {
+	try {
+		const { type, price, size, difficulty,
+			country, city, street, streetNumber, spotNumber } = req.body;
+		const user8 = await User.findOne({ email: req.body.email });
+			const newParking1 = new Parking({
+			user: user8._id,
+			type,
+			price,
+			size,
+			difficulty,
+			country,
+			city,
+			street,
+			streetNumber,
+			spotNumber,
+			opinions: [],
+			score: 0,
+			longitude: 0,
+			latitude: 0,
+			range: ""
+		});
+		await newParking1.save().catch(Error);
+		await User.updateOne(
+			{ _id: user8._id },
+			{ $addToSet: { myParkings: newParking1._id } }
+		);
+
+		res.status(200).json({ auth: true });
+	}
+	catch {
+		res.status(400).json({ message: 'User not found' });
+	}
+};
+
 const cancel = async (req: Request, res: Response) => {
 	try {
 		const _id = req.body._id;
+		const parking = await Parking.findById(_id)
+		if (!parking) {
+			res.status(400).json({ message: 'Parking not found' });
+		}
+		await Parking.findByIdAndDelete(_id).catch(Error);
+		await User.updateOne(
+			{ _id: parking.user },
+			{ $pull: { myParkings: parking._id } }
+		);
+		res.status(200).json({ auth: true });
+	}
+	catch (err) {
+		res.status(400).json({ message: 'Error', err });
+	}
+};
+
+const canceloffice = async (req: Request, res: Response) => {
+	try {
+		const _id = req.params.id;
 		const parking = await Parking.findById(_id)
 		if (!parking) {
 			res.status(400).json({ message: 'Parking not found' });
@@ -224,7 +278,9 @@ const getowner = async (req: Request, res: Response) => {
 
 export default {
 	register,
+	postoffice,
 	cancel,
+	canceloffice,
 	getall,
 	filter,
 	getowner,

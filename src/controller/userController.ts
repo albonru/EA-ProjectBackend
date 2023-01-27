@@ -177,6 +177,31 @@ const deleteUser = async (req: Request, res: Response) => {
 	}
 }
 
+const deleteoffice = async (req: Request, res: Response) => {
+	const _id = req.params.id;
+	try {
+		const user = await User.findByIdAndUpdate(_id, {
+			deleted: true
+		}, { new: true });
+		try {
+			const parkings = user.myParkings;
+			for (const p of parkings) {
+				const parking = await Parking.findById(p);
+				await Parking.findByIdAndDelete(p).catch(Error);
+				await User.updateOne(
+					{ _id: parking.user },
+					{ $pull: { myParkings: parking._id } }
+				);
+			}
+		}
+		catch { return res.status(200).json(user); }
+		return res.status(200).json(user);
+	}
+	catch (err) {
+		res.status(400).json({ message: 'User not found', err });
+	}
+}
+
 const activate = async (req: Request, res: Response) => {
 	const email = req.body.email;
 	const user1 = await User.findOne({ email });
@@ -319,6 +344,7 @@ export default {
 	updateName,
 	updateEmail,
 	deleteUser,
+	deleteoffice,
 	activate,
 	checkemail,
 	AddtomyFavorites,

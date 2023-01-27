@@ -13,6 +13,6 @@ export interface IReport extends Document{
     type: string;
     time: string;
     text: string;
-    level: number; // 0 sense emergencia, 1 baix, 2 mig, 3 alt
+    level: number;
 }
 export default mongoose.model<IReport>('Report', ReportSchema);

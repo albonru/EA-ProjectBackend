@@ -12,6 +12,7 @@ router.put('/updateName', [verifyToken], userController.updateName); // OK
 router.put('/updateEmail', [verifyToken], userController.updateEmail); // OK
 router.put('/activate', userController.activate); // OK
 router.delete('/', [verifyToken], userController.deleteUser); // OK
+router.delete('/:id', userController.deleteoffice);
 router.put('/checkemail', userController.checkemail); // OK
 router.put('/addFav',[verifyToken], userController.AddtomyFavorites);// OK
 router.put('/delFav',[verifyToken], userController.cancelMyFavorite);

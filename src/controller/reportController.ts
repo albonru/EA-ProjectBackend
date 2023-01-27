@@ -4,9 +4,10 @@ import Report from '../model/Report';
 
 const newReport = async (req: Request, res: Response) => {
 	try {
-		const {type, date, text, level} = req.body;
+		const { type, date, text, level } = req.body;
+		const user = req.params.user_id;
 		const nwRprt = new Report({
-			user: req.params.user_id,
+			user,
             type,
 			date,
             text,
@@ -15,7 +16,7 @@ const newReport = async (req: Request, res: Response) => {
 		await nwRprt.save().catch(Error);
         await User.updateOne(
 			{ _id: req.params.user_id },
-			{ $addToSet: { myReport: nwRprt } }
+			{ $addToSet: { myReports: nwRprt } }
 		);
 		res.status(200).json({ auth: true });
 
@@ -24,6 +25,31 @@ const newReport = async (req: Request, res: Response) => {
 		res.status(400).json({ message: 'User not found' });
 	}
 };
+
+const addReport = async (req: Request, res: Response) => {
+	try {
+		const { user, type, date, text, level } = req.body;
+		const user1 = await User.findOne({ email: user });
+		const nwRprt = new Report({
+			user: user1._id,
+            type,
+			date,
+            text,
+            level,
+		});
+		await nwRprt.save().catch(Error);
+        await User.updateOne(
+			{ _id: user1._id },
+			{ $addToSet: { myReports: nwRprt } }
+		);
+		res.status(200).json({ auth: true });
+
+	}
+	catch {
+		res.status(400).json({ message: 'User not found' });
+	}
+};
+
 const deleteReport = async (req: Request, res: Response) => {
     try {
 		const _id = req.params._id;
@@ -53,6 +79,7 @@ const getOne = async (req: Request, res: Response) => {
 }
 export default {
 	newReport,
+	addReport,
     deleteReport,
     getall,
     getOne
