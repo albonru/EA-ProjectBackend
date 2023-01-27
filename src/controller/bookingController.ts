@@ -7,7 +7,6 @@ const book = async (req: Request, res: Response) => {
 	const { parking, arrival, departure } = req.body;
 	try {
 		const parking1 = await Parking.findById(parking);
-		// FALTA MULTIPLICAR PELS DIES
 		const cost: number = parking1.price;
 		const newBooking = new Booking({
 			parking: parking1._id,
